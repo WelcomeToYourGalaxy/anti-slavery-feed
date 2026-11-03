@@ -1,0 +1,1301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Global Wire — forced labour, trafficking and child labour</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Uncial+Antiqua&family=Marcellus&display=swap');
+/* ============================================================
+   Global Wire — forced labour, trafficking and child labour.
+   Everything scoped to .sf so it can be embedded anywhere.
+   Palette: the olive of the anti-slavery map, with clay, slate and
+   moss beside it. Nothing neon, nothing in the orange or yellow band.
+   ============================================================ */
+.sf {
+    --ink: #eae9e6;
+    --ink-dim: #a5a49c;
+    --ink-faint: #75746c;
+    --line: rgba(255,255,255,0.10);
+    --line-soft: rgba(255,255,255,0.06);
+    --accent: #9ea28a;     /* olive, the map's accent — live dot, title, progress */
+    --flag: #c08a86;       /* clay — well-documented marker */
+    --cool: #8ea2b8;
+
+    font-family: 'Marcellus', 'Georgia', serif;
+    color: var(--ink);
+    background:
+        radial-gradient(1100px 520px at 88% -10%, rgba(97,101,66,0.26), transparent 60%),
+        radial-gradient(760px 420px at 4% 4%, rgba(62,76,80,0.22), transparent 58%),
+        linear-gradient(180deg, #0c0f0f 0%, #121514 60%, #0d1010 100%);
+    line-height: 1.45;
+    width: 100%;
+    height: 100svh;
+    min-height: 540px;
+    margin: 0 auto;
+    padding: clamp(0.7rem, 1.6vw, 1.1rem) clamp(0.7rem, 2vw, 1.4rem) 0.6rem;
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(0.45rem, 1vh, 0.75rem);
+    contain: layout style;
+}
+.sf * { box-sizing: border-box; }
+.sf a { color: inherit; }
+
+/* ---------- Header ---------- */
+.sf-head { flex: 0 0 auto; display: flex; align-items: baseline; justify-content: space-between; gap: clamp(0.8rem, 3vw, 2.2rem); flex-wrap: wrap; max-width: 1320px; width: 100%; margin: 0 auto; }
+.sf-title { font-family: 'Uncial Antiqua', 'Marcellus', 'Georgia', serif; font-weight: 400; font-size: clamp(1.35rem, 2.9vw, 2.25rem); line-height: 1.05; letter-spacing: -0.015em; margin: 0; color: #f7f6f3; display: flex; align-items: center; gap: 0.55rem; }
+.sf-title em { font-style: normal; color: var(--accent); }
+.sf-dot { width: 8px; height: 8px; border-radius: 50%; background: #9ea28a; box-shadow: 0 0 0 4px rgba(158,162,138,0.16); animation: sf-pulse 2.6s ease-in-out infinite; flex: 0 0 auto; }
+.sf-dot.idle { background: #8a8880; box-shadow: 0 0 0 4px rgba(138,136,128,0.14); animation: none; }
+.sf-dot.error { background: #c08a86; box-shadow: 0 0 0 4px rgba(192,138,134,0.16); animation: none; }
+@keyframes sf-pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+.sf-lede { font-size: clamp(0.63rem, 0.85vw, 0.72rem); color: var(--ink-dim); max-width: 62ch; margin: 0; line-height: 1.45; }
+.sf-lede strong { color: var(--ink); font-weight: 500; }
+
+/* ---------- Panel ---------- */
+.sf-panel { flex: 1 1 auto; min-height: 0; max-width: 1320px; width: 100%; margin: 0 auto; border: 1px solid var(--line-soft); border-radius: 16px; background: rgba(255,255,255,0.022); overflow: hidden; display: flex; flex-direction: column; }
+.sf-bar { flex: 0 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 0.8rem; flex-wrap: wrap; padding: 0.45rem 0.9rem; border-bottom: 1px solid var(--line-soft); }
+.sf-status { font-size: 0.63rem; color: var(--ink-dim); margin: 0; }
+.sf-tools { display: flex; align-items: center; gap: 0.4rem; flex: 1 1 260px; justify-content: flex-end; max-width: 620px; flex-wrap: wrap; }
+.sf-search { flex: 1 1 auto; min-width: 120px; font-family: inherit; font-size: 0.7rem; color: var(--ink); background: rgba(255,255,255,0.04); border: 1px solid var(--line-soft); border-radius: 8px; padding: 0.3rem 0.6rem; }
+.sf-search::placeholder { color: var(--ink-faint); }
+.sf-search:focus { outline: none; border-color: rgba(255,255,255,0.24); }
+.sf-btn { font-family: inherit; font-size: 0.62rem; letter-spacing: 0.06em; color: var(--ink); background: rgba(255,255,255,0.05); border: 1px solid var(--line); border-radius: 999px; padding: 0.28rem 0.7rem; cursor: pointer; flex: 0 0 auto; }
+.sf-btn:hover { background: rgba(255,255,255,0.10); border-color: rgba(255,255,255,0.24); }
+.sf-btn:disabled { opacity: 0.5; cursor: default; }
+.sf-progress { height: 2px; background: rgba(255,255,255,0.06); }
+.sf-progress-fill { height: 100%; width: 0; background: var(--accent); transition: width 0.35s ease; }
+
+.sf-filters { flex: 0 0 auto; display: flex; flex-direction: column; gap: 0.2rem; padding: 0.35rem 0.9rem; border-bottom: 1px solid var(--line-soft); }
+.sf-row { display: flex; align-items: center; gap: 0.35rem; flex-wrap: nowrap; overflow-x: auto; overflow-y: hidden; scrollbar-width: none; padding-bottom: 1px; }
+.sf-row::-webkit-scrollbar { height: 0; }
+.sf-key { position: sticky; left: 0; z-index: 1; flex: 0 0 auto; font-size: 0.53rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-faint); background: linear-gradient(90deg, #121514 72%, transparent); padding-right: 0.4rem; min-width: 62px; }
+.sf-chip { flex: 0 0 auto; font-family: inherit; font-size: 0.62rem; color: var(--ink-dim); background: rgba(255,255,255,0.03); border: 1px solid var(--line-soft); border-radius: 999px; padding: 0.15rem 0.55rem; cursor: pointer; white-space: nowrap; }
+.sf-chip:hover { color: var(--ink); border-color: rgba(255,255,255,0.22); }
+.sf-chip.on { color: #121514; background: var(--chipcolor, #d8d5cd); border-color: transparent; font-weight: 500; }
+.sf-chip .sf-n { opacity: 0.6; margin-left: 0.3rem; font-variant-numeric: tabular-nums; }
+.sf-chip.empty { opacity: 0.4; }
+
+.sf-tr { display: flex; align-items: center; gap: 0.25rem; flex: 0 0 auto; position: sticky;
+    left: 62px; z-index: 2; background: linear-gradient(90deg, #121514 82%, transparent);
+    padding-right: 0.5rem; }
+.sf-trlabel { font-size: 0.53rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-faint); }
+.sf-tr select { font-family: inherit; font-size: 0.62rem; color: var(--ink);
+    background: rgba(255,255,255,0.05); border: 1px solid var(--line); border-radius: 999px;
+    padding: 0.26rem 0.5rem; cursor: pointer; max-width: 150px; }
+.sf-tr select:focus { outline: none; border-color: rgba(255,255,255,0.28); }
+.sf-mt { color: var(--ink-faint); border: 1px solid var(--line-soft); border-radius: 999px;
+    padding: 0.02rem 0.38rem; letter-spacing: 0.1em; }
+.sf-orig { color: var(--ink-faint); text-decoration: underline; text-underline-offset: 2px; }
+.sf-list { flex: 1 1 auto; min-height: 130px; overflow-y: auto; scrollbar-width: thin; overscroll-behavior: contain; }
+.sf-item { display: block; padding: 0.55rem 0.9rem; border-bottom: 1px solid var(--line-soft); text-decoration: none; color: inherit; }
+.sf-item:last-child { border-bottom: 0; }
+.sf-item:hover { background: rgba(255,255,255,0.035); }
+.sf-item.watch { border-left: 2px solid var(--flag); }
+.sf-meta { display: flex; align-items: center; gap: 0.45rem; flex-wrap: wrap; font-size: 0.57rem; color: var(--ink-faint); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 0.2rem; }
+.sf-lang { color: #d5d2ca; background: rgba(255,255,255,0.07); border-radius: 4px; padding: 0.06rem 0.32rem; letter-spacing: 0.08em; }
+.sf-flag { color: var(--flag); border: 1px solid rgba(192,138,134,0.5); border-radius: 4px; padding: 0.04rem 0.3rem; }
+.sf-scale { display: inline-flex; gap: 2px; align-items: center; }
+.sf-pip { width: 4px; height: 4px; border-radius: 50%; background: rgba(255,255,255,0.18); }
+.sf-pip.on { background: var(--accent); }
+.sf-why { color: var(--ink-faint); letter-spacing: 0.08em; }
+.sf-standing { border: 1px solid; border-radius: 999px; padding: 0.02rem 0.4rem; letter-spacing: 0.12em; }
+.sf-item-title { font-size: 0.79rem; font-weight: 500; line-height: 1.35; color: #f2f1ee; }
+.sf-item:hover .sf-item-title { color: var(--accent); }
+.sf-snip { font-size: 0.66rem; line-height: 1.45; color: var(--ink-dim); margin-top: 0.15rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.sf-tags { display: flex; gap: 0.28rem; flex-wrap: wrap; margin-top: 0.3rem; }
+.sf-t { font-size: 0.53rem; letter-spacing: 0.14em; text-transform: uppercase; border: 1px solid; border-radius: 999px; padding: 0.08rem 0.42rem; }
+.sf-state { padding: 1.6rem 1rem; text-align: center; font-size: 0.74rem; color: var(--ink-dim); line-height: 1.6; }
+.sf-state strong { color: var(--ink); font-weight: 500; }
+.sf-more { display: block; width: 100%; border: 0; border-top: 1px solid var(--line-soft); background: rgba(255,255,255,0.02); font-family: inherit; font-size: 0.64rem; color: var(--ink-dim); padding: 0.45rem; cursor: pointer; letter-spacing: 0.06em; }
+.sf-more:hover { color: var(--ink); }
+
+/* ---------- Sheets ---------- */
+.sf-sheet { position: absolute; left: clamp(0.7rem, 2vw, 1.4rem); right: clamp(0.7rem, 2vw, 1.4rem); bottom: 2.6rem; z-index: 30; max-height: 66%; overflow-y: auto; display: none; border: 1px solid var(--line); border-radius: 14px; padding: 0.9rem 1rem; background: rgba(16,20,19,0.97); backdrop-filter: blur(10px); box-shadow: 0 24px 60px rgba(0,0,0,0.55); }
+.sf-sheet.open { display: block; }
+.sf-sheet-close { position: absolute; top: 0.5rem; right: 0.7rem; background: none; border: 0; color: var(--ink-faint); font-size: 1rem; cursor: pointer; font-family: inherit; line-height: 1; }
+.sf-sheet-close:hover { color: var(--ink); }
+.sf-note { font-size: 0.68rem; line-height: 1.6; color: var(--ink-dim); margin: 0 0 0.6rem; max-width: 96ch; }
+.sf-note strong { color: var(--ink); font-weight: 500; }
+.sf-src-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.1rem 0.9rem; }
+.sf-src { display: flex; justify-content: space-between; gap: 0.5rem; font-size: 0.62rem; color: var(--ink-dim); padding: 0.14rem 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+.sf-src span:last-child { font-variant-numeric: tabular-nums; color: var(--ink-faint); }
+.sf-src.fail span:last-child { color: #c08a86; }
+
+.sf-foot { flex: 0 0 auto; max-width: 1320px; width: 100%; margin: 0 auto; padding-top: 0.4rem; border-top: 1px solid var(--line-soft); font-size: 0.57rem; color: var(--ink-faint); line-height: 1.4; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+.sf-foot-tools { display: flex; gap: 0.35rem; flex: 0 0 auto; }
+.sf-tab { font-family: inherit; font-size: 0.58rem; letter-spacing: 0.08em; color: var(--ink-dim); background: rgba(255,255,255,0.04); border: 1px solid var(--line-soft); border-radius: 999px; padding: 0.2rem 0.6rem; cursor: pointer; }
+.sf-tab:hover, .sf-tab.on { color: var(--ink); border-color: rgba(255,255,255,0.24); }
+
+@media (max-width: 900px) {
+    .sf-panel { flex: 0 0 auto; }
+    .sf-list { max-height: none; }
+    .sf-sheet { position: fixed; left: 0.6rem; right: 0.6rem; bottom: 0.6rem; max-height: 72vh; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .sf *, .sf *::before, .sf *::after { animation: none !important; transition: none !important; }
+}
+.sf-body { flex: 1 1 auto; display: flex; min-height: 0; gap: 0; }
+.sf-map-wrap { flex: 0 0 38%; min-width: 240px; min-height: 240px; border-left: 1px solid var(--line-soft);
+    position: relative; display: flex; flex-direction: column; }
+.sf-map { flex: 1 1 auto; min-height: 0; background: #0d1110; position: relative; }
+.sf-map::after { content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 500; transition: opacity .3s ease;
+    background:
+        radial-gradient(ellipse 132% 120% at 50% 42%, transparent 46%, rgba(14,18,12,0.34) 74%, rgba(8,10,7,0.66) 100%),
+        radial-gradient(ellipse 120% 85% at 50% 108%, rgba(12,16,11,0.40), transparent 54%); }
+.sf-placed { margin: 0.2rem 0 0; font-size: 0.68rem; line-height: 1.4; color: var(--ink-faint); }
+.sf-placed b { font-weight: 400; color: var(--ink-dim); }
+.sf-map-note { flex: 0 0 auto; font-size: 0.55rem; color: var(--ink-faint); padding: 0.28rem 0.6rem;
+    border-top: 1px solid var(--line-soft); display: flex; align-items: center; gap: 0.5rem; }
+.sf-map .leaflet-container { background: #0d1110; font-family: inherit; }
+.sf-map .leaflet-popup-content-wrapper { background: rgba(18,21,20,0.97); color: var(--ink);
+    border: 1px solid var(--line); border-radius: 10px; }
+.sf-map .leaflet-popup-tip { background: rgba(18,21,20,0.97); }
+.sf-map .leaflet-popup-content { margin: 0.6rem 0.7rem; font-size: 0.7rem; line-height: 1.4; max-height: 220px; overflow-y: auto; }
+.sf-map .leaflet-popup-content a { color: var(--accent); text-decoration: none; display: block; margin-bottom: 0.4rem; }
+.sf-map .leaflet-popup-content a:hover { text-decoration: underline; }
+.sf-map .leaflet-popup-content a { padding-bottom: 0.35rem; border-bottom: 1px solid var(--line-soft); }
+.sf-map .leaflet-popup-content a:last-child { border-bottom: 0; margin-bottom: 0; }
+.sf-map .leaflet-popup-content a.sf-pop-first { color: var(--flag); }
+.sf-pop-src { display: block; font-size: 0.55rem; color: var(--ink-faint); margin-top: 0.12rem; }
+.sf-map .leaflet-popup-content .sf-pop-place { font-size: 0.55rem; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--ink-faint); margin-bottom: 0.35rem; }
+.sf-map .leaflet-control-attribution { background: rgba(18,21,20,0.8); color: var(--ink-faint); font-size: 0.5rem; }
+.sf-map .leaflet-control-attribution a { color: var(--ink-dim); }
+
+/* The map keeps its column beside the list at every width. Below 900px it
+   narrows rather than moving underneath — there is no companion panel here
+   competing for the height, so nothing has to go below the fold. */
+@media (max-width: 900px) {
+    .sf-map-wrap { flex: 0 0 34%; min-width: 150px; }
+}
+
+/* A point inferred from the reporting country rather than read out of
+   the story is drawn hollow, so the map never claims to know more than
+   it does. */
+.sf-pin { border-radius: 50%; box-shadow: 0 0 0 1.5px rgba(10,13,13,0.85), 0 1px 4px rgba(0,0,0,0.45); }
+.sf-pin.sf-pin-sm { box-shadow: 0 0 0 1px rgba(10,13,13,0.85); }
+.sf-pin-approx { background: transparent !important;
+    box-shadow: inset 0 0 0 1.5px currentColor, 0 0 0 1px rgba(10,13,13,0.6); }
+.sf-sort { font-family: inherit; font-size: 0.62rem; color: var(--ink); background: rgba(255,255,255,0.05);
+    border: 1px solid var(--line); border-radius: 999px; padding: 0.26rem 0.5rem; cursor: pointer; flex: 0 0 auto; }
+.sf-sort:focus { outline: none; border-color: rgba(255,255,255,0.28); }
+.sf-sort option, .sf-tr select option { background: #121514; color: var(--ink); }
+</style>
+</head>
+<body style="margin:0; background:#0c0f0f;">
+<div class="sf">
+
+    <header class="sf-head">
+        <h1 class="sf-title"><span class="sf-dot idle" id="sfDot"></span> <span>Global Wire: <em>forced labour, trafficking, child labour</em></span></h1>
+        <p class="sf-lede">
+            <strong>News from anti-slavery groups, unions, courts, rights researchers and the press, in 24 languages.</strong>
+            Each story is marked as harm reported or action taken. Anti-slavery and labour groups are labelled as such.
+        </p>
+    </header>
+
+    <section class="sf-panel">
+        <div class="sf-bar">
+            <p class="sf-status" id="sfStatus">Loading the wire…</p>
+            <div class="sf-tools">
+                <input class="sf-search" id="sfSearch" type="search" placeholder="kiln, cocoa, kafala, rescued, Qatar…" aria-label="Filter headlines">
+                <select class="sf-sort" id="sfSort" aria-label="Order the feed">
+                    <option value="new">Newest first</option>
+                    <option value="old">Oldest first</option>
+                    <option value="doc">Best documented first</option>
+                    <option value="lang">By language</option>
+                </select>
+                <button class="sf-btn" id="sfClear">Clear</button>
+                <button class="sf-btn" id="sfRefresh">Refresh</button>
+            </div>
+        </div>
+        <div class="sf-progress"><div class="sf-progress-fill" id="sfProgress"></div></div>
+
+        <div class="sf-filters">
+            <div class="sf-row" id="sfTopicRow"><span class="sf-key">Subject</span></div>
+            <div class="sf-row" id="sfGeoRow"><span class="sf-key">Region</span></div>
+            <div class="sf-row" id="sfSubRow" style="display:none;"><span class="sf-key">Within</span></div>
+            <div class="sf-row" id="sfPlaceRow" style="display:none;"><span class="sf-key">Place</span></div>
+            <div class="sf-row" id="sfRegionRow"><span class="sf-key">Who reports it</span></div>
+            <div class="sf-row" id="sfKindRow"><span class="sf-key">Direction</span></div>
+            <div class="sf-row" id="sfEvidenceRow"><span class="sf-key">Evidence</span></div>
+            <div class="sf-row" id="sfLangRow"><span class="sf-key">Language</span><span class="sf-tr"><label for="sfTr" class="sf-trlabel">Translate to</label><select id="sfTr" aria-label="Translate the feed"></select></span></div>
+            <div class="sf-row" id="sfWhenRow"><span class="sf-key">Window</span></div>
+        </div>
+        <div class="sf-body">
+            <div class="sf-list" id="sfList"><div class="sf-state">Loading the wire…</div></div>
+            <div class="sf-map-wrap" id="sfMapWrap">
+                <div class="sf-map" id="sfMap"></div>
+                <div class="sf-map-note"><span id="sfMapCount">—</span><span id="sfMapUnplaced"></span></div>
+            </div>
+        </div>
+    </section>
+
+    <div class="sf-sheet" id="sfSheetAbout" role="dialog" aria-label="How this feed works">
+        <button class="sf-sheet-close" data-close aria-label="Close">×</button>
+        <p class="sf-note">
+            <strong>What this is.</strong> A news feed on forced labour, modern slavery, human trafficking,
+            debt bondage and child labour, worldwide. It is the Global Wire of the anti-slavery map, run on its
+            own: the same subject definition, the same feed list and the same topic threads, read every two
+            hours. Headlines and snippets are the publishers' own. Every row links to the original, and no
+            model touches the text. The only change made to a headline is removing the outlet name that
+            Google News adds to the end of it; the outlet is shown beside the row instead.
+        </p>
+        <p class="sf-note">
+            <strong>Both directions.</strong> <em>Harm reported</em>: workers trafficked, wages withheld,
+            passports taken, children in hazardous work, crews left at sea. <em>Action taken</em>: raids and
+            rescues, arrests and convictions, import bans and detained shipments, court rulings, back wages and
+            compensation, laws passed. Every row is marked with one or both, and the <em>Direction</em> filter
+            separates them. A raid that freed forty workers is both. A story with neither kind of word, such as
+            an explainer on a new law, is filed as harm reported.
+        </p>
+        <p class="sf-note">
+            <strong>Region.</strong> Placement runs three levels deep: region, then subregion, then country.
+            Middle East → Gulf states &amp; Yemen → Qatar. Europe → Southern Europe → Italy. A story naming a
+            city or province is placed through a shared gazetteer: Foggia files under Italy. A story about
+            several countries at once, or carrying words like "cross-border" or "worldwide", is also filed
+            under <em>International / several countries</em>. Each row is labelled with the most specific
+            placement known for it, and each chip counts what it holds, so an empty subregion is visible.
+        </p>
+        <p class="sf-note">
+            <strong>Who reports it.</strong> Wires are labelled by what kind of source they are.
+            <em>Anti-slavery &amp; labour groups</em> covers Anti-Slavery International, Freedom United,
+            Migrant-Rights.org, Equal Times, LabourStart and IndustriALL. <em>Bodies &amp; courts</em> is UN
+            News, OHCHR, JURIST, and searches of the ILO, the US Labor Department, US Customs and UNODC.
+            <em>Research &amp; rights groups</em> is Human Rights Watch, Amnesty, the Business &amp; Human Rights
+            Resource Centre and Walk Free. <em>Investigative &amp; field press</em> is Reporter Brasil and
+            Mongabay. Then general press, including Google News searches in 24 languages.
+        </p>
+        <p class="sf-note">
+            <strong>What gets in.</strong> The headline has to carry a subject term, such as forced labour,
+            human trafficking, child labour, debt bondage, bonded labour, servitude, kafala, recruitment fees,
+            caporalato or trabalho escravo, or the headline and snippet together have to carry two different
+            ones. One term in the last line of a crime round-up is not enough. This is the rule the anti-slavery
+            map's own wire uses.
+        </p>
+        <p class="sf-note">
+            <strong>What is refused.</strong> The idioms ("slave to fashion", "wage slave"); the historical
+            transatlantic slave trade and slavery museums; commemoration of Nazi-era forced labour; the UK
+            Labour Party; childbirth ("went into labour"); childcare policy; and sport, celebrity, markets and
+            event promotion. The status line reports how many stories each harvest refused.
+        </p>
+        <p class="sf-note">
+            <strong>Evidence.</strong> Each story is scored on what it carries: a documented act, such as a
+            conviction, a rescue, a raid, a seizure or a ruling (2); institutional material, such as the ILO,
+            UNICEF, UNODC, a court, US Customs, a labour inspectorate, Brazil's "lista suja", or a report or
+            investigation (2); a measured count, such as "43 workers", a per cent or a sum of money (1); a
+            pending decision or a date a rule takes effect (1); a named place (1); and a primary source (1). At
+            three or more the row is marked well documented.
+        </p>
+        <p class="sf-note">
+            <strong>Limits worth knowing.</strong> The gate reads words, not meaning. It misses stories that
+            describe forced labour without using any of its terms, and it lets in some it should not, such as
+            German pieces on wartime forced labour that do not use the words it refuses. Standing is assigned
+            per wire, not per article. Google News caps a query at roughly 100 results. Most stories name no
+            place the gazetteer recognises; those are pinned hollow at the country of the edition that carried
+            them and left out of the region counts. Coverage is uneven by language, and the counts show that.
+        </p>
+    </div>
+
+    <div class="sf-sheet" id="sfSheetSources" role="dialog" aria-label="Sources and coverage">
+        <button class="sf-sheet-close" data-close aria-label="Close">×</button>
+        <p class="sf-note">
+            Every wire on the list, with its standing: what it returned on the last harvest, and how many of
+            its stories were refused. A wire that could not be reached says so rather than disappearing.
+        </p>
+        <div class="sf-src-grid" id="sfSrcGrid"></div>
+    </div>
+
+    <footer class="sf-foot">
+        <span>Harvested every two hours from UN bodies and courts, anti-slavery and labour organisations, rights research, investigative press, and Google News in 24 languages. Headlines belong to their publishers.</span>
+        <span class="sf-foot-tools">
+            <button class="sf-tab" data-sheet="sfSheetAbout">How this works</button>
+            <button class="sf-tab" data-sheet="sfSheetSources">Sources &amp; coverage</button>
+        </span>
+    </footer>
+</div>
+
+<script>
+(function () {
+'use strict';
+
+const REPO = 'WelcomeToYourGalaxy/anti-slavery-feed';
+const BRANCH = 'main';
+const ENDPOINTS = [
+    () => 'https://raw.githubusercontent.com/' + REPO + '/' + BRANCH + '/wire_slavery.json?t=' + Date.now(),
+    () => 'https://cdn.jsdelivr.net/gh/' + REPO + '@' + BRANCH + '/wire_slavery.json',
+    // the copy beside the page, for GitHub Pages or a local server
+    () => 'wire_slavery.json?t=' + Date.now()
+];
+
+// Earth tones: moss, sage, clay, slate, mauve, taupe. Nothing neon, and
+// nothing in the orange or yellow band.
+const TOPIC_COLOR = {
+    enforcement: '#c08a86',    // clay
+    child: '#c4a6a2',          // dusty rose
+    supply: '#8ea2b8',         // slate blue
+    imports: '#93a3c0',        // slate
+    trafficking: '#b193a8',    // mauve
+    migrant: '#86a5a5',        // weathered teal
+    sea: '#7f9cae',            // sea slate
+    mining: '#a9a49a',         // taupe
+    state: '#a496b8',          // muted violet
+    law: '#a8b79a',            // moss
+    survivors: '#9ea28a',      // olive
+    other: '#8f8c85'           // stone
+};
+const STANDING_COLOR = {
+    official: '#93a3c0', labour: '#9ea28a', research: '#a8b79a',
+    field: '#86a5a5', press: '#a49f98'
+};
+const KIND_COLOR = { harm: '#c08a86', action: '#a8b79a' };
+const WINDOWS = [
+    { id: 'd1', label: '24 hours', ms: 864e5 },
+    { id: 'd7', label: '7 days', ms: 7 * 864e5 },
+    { id: 'd30', label: '30 days', ms: 30 * 864e5 },
+    // the wire keeps 45 days, so anything past a month is reachable on its own
+    { id: 'older', label: 'Older than 30 days', ms: 30 * 864e5, older: true },
+    { id: 'all', label: 'Everything', ms: null }
+];
+
+const EVIDENCE = [
+    { id: 'all', label: 'All stories' },
+    { id: 'doc', label: 'Well-documented only' }
+];
+
+/* ============================================================
+   Translation. Two independent things, because one of them can
+   fail and the other cannot:
+
+   1. In-place machine translation of the headlines and snippets
+      you are looking at, through a free public endpoint. No key,
+      no account. If it is unavailable the row falls back to the
+      original text and says so rather than showing nothing.
+   2. A per-row link that opens the article itself translated,
+      which is a plain URL and works even when (1) does not.
+
+   Machine translation is never presented as the publisher's own
+   words: a translated row is marked, and the original title is
+   kept on hover.
+   ============================================================ */
+const TR_LANGS = [
+    ['off', 'Off — original'], ['en', 'English'], ['es', 'Español'], ['pt', 'Português'],
+    ['fr', 'Français'], ['de', 'Deutsch'], ['it', 'Italiano'], ['nl', 'Nederlands'],
+    ['sv', 'Svenska'], ['pl', 'Polski'], ['el', 'Ελληνικά'], ['ru', 'Русский'],
+    ['uk', 'Українська'], ['tr', 'Türkçe'], ['ar', 'العربية'], ['he', 'עברית'],
+    ['fa', 'فارسی'], ['hi', 'हिन्दी'], ['bn', 'বাংলা'], ['id', 'Bahasa Indonesia'],
+    ['vi', 'Tiếng Việt'], ['th', 'ไทย'], ['ja', '日本語'], ['zh-CN', '简体中文'],
+    ['zh-TW', '繁體中文'], ['ko', '한국어'], ['sw', 'Kiswahili']
+];
+const trCache = new Map();        // key: lang + '\u0000' + text
+let trPending = false;
+
+function trKey(lang, text) { return lang + '\u0000' + text; }
+
+async function trOne(text, lang) {
+    const endpoints = [
+        () => 'https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=' +
+              lang + '&dt=t&q=' + encodeURIComponent(text),
+        () => 'https://api.mymemory.translated.net/get?q=' + encodeURIComponent(text) +
+              '&langpair=autodetect|' + lang
+    ];
+    for (let i = 0; i < endpoints.length; i++) {
+        try {
+            const res = await fetch(endpoints[i]());
+            if (!res.ok) continue;
+            const data = await res.json();
+            if (i === 0 && Array.isArray(data) && Array.isArray(data[0])) {
+                const out = data[0].map(seg => (seg && seg[0]) || '').join('');
+                if (out.trim()) return out;
+            }
+            if (i === 1 && data && data.responseData && data.responseData.translatedText) {
+                return data.responseData.translatedText;
+            }
+        } catch (e) { /* try the next one */ }
+    }
+    return null;
+}
+
+async function trFill(items, lang, onDone) {
+    // only what is on screen, and only what is not already cached
+    const wanted = [];
+    items.forEach(i => {
+        [i.title, i.snippet].forEach(t => {
+            if (t && !trCache.has(trKey(lang, t))) wanted.push(t);
+        });
+    });
+    if (!wanted.length) { onDone(false); return; }
+
+    trPending = true;
+    let changed = false;
+    const queue = wanted.slice(0, 120);
+    async function worker() {
+        while (queue.length) {
+            const text = queue.shift();
+            const out = await trOne(text, lang);
+            trCache.set(trKey(lang, text), out || text);   // fall back to the original
+            changed = true;
+        }
+    }
+    await Promise.all([worker(), worker(), worker(), worker()]);
+    trPending = false;
+    onDone(changed);
+}
+
+function trText(text, lang) {
+    if (!text || lang === 'off') return text;
+    const hit = trCache.get(trKey(lang, text));
+    return hit === undefined ? text : hit;
+}
+
+/* the article itself, translated, as a plain link */
+function trUrl(url, lang) {
+    try {
+        const u = new URL(url);
+        return 'https://translate.google.com/translate?sl=auto&tl=' + lang +
+               '&u=' + encodeURIComponent(u.href);
+    } catch (e) { return url; }
+}
+
+const state = { tl: 'off', items: [], topics: [], languages: {}, sources: [], generated: null,
+                geo: [], standings: [], kinds: [], docScore: 3, topic: 'all', standing: 'all',
+                place: 'all', sub: 'all', spot: 'all', kind: 'all', langs: new Set(),
+                when: 'all', evidence: 'all', query: '', shown: 50, loading: false,
+                sort: 'new', coords: {}, seed: null };
+
+const $list = document.getElementById('sfList');
+const $status = document.getElementById('sfStatus');
+const $dot = document.getElementById('sfDot');
+const $prog = document.getElementById('sfProgress');
+const $topicRow = document.getElementById('sfTopicRow');
+const $standingRow = document.getElementById('sfRegionRow');
+const $evidenceRow = document.getElementById('sfEvidenceRow');
+const $kindRow = document.getElementById('sfKindRow');
+const $geoRow = document.getElementById('sfGeoRow');
+const $subRow = document.getElementById('sfSubRow');
+const $placeRow = document.getElementById('sfPlaceRow');
+const $langRow = document.getElementById('sfLangRow');
+const $whenRow = document.getElementById('sfWhenRow');
+const $search = document.getElementById('sfSearch');
+const $srcGrid = document.getElementById('sfSrcGrid');
+const $refresh = document.getElementById('sfRefresh');
+const $sort = document.getElementById('sfSort');
+const $more = document.createElement('button');
+$more.className = 'sf-more';
+$more.addEventListener('click', () => { state.shown += 50; render(); });
+
+function esc(s) { return (s || '').replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c])); }
+function timeAgo(ts) {
+    if (!ts) return 'undated';
+    const m = Math.round((Date.now() - ts) / 60000);
+    if (m < 1) return 'just now';
+    if (m < 60) return m + 'm ago';
+    const h = Math.round(m / 60);
+    if (h < 24) return h + 'h ago';
+    const d = Math.round(h / 24);
+    return d < 30 ? d + 'd ago' : new Date(ts).toISOString().slice(0, 10);
+}
+function langName(c) { return state.languages[c] || c; }
+function placeLabel(item) {
+    // name the most specific thing known: the place, else the subregion, else the region
+    const spots = (item.spots || []).filter(p => p !== 'unlocated');
+    const subs = (item.subs || []).filter(p => p !== 'unlocated');
+    const regs = (item.places || []).filter(p => p !== 'unlocated');
+    const lookup = (id) => {
+        for (const r of state.geo) {
+            if (r.id === id) return r.label;
+            for (const sb of (r.subs || [])) {
+                if (sb.id === id) return sb.label;
+                for (const pl of (sb.places || [])) if (pl.id === id) return pl.label;
+            }
+        }
+        return id;
+    };
+    const pick = spots.length ? spots : (subs.length ? subs : regs);
+    if (!pick.length) return 'unplaced';
+    return pick.slice(0, 2).map(lookup).join(' · ');
+}
+function topicLabel(id) { const t = state.topics.find(t => t.id === id); return t ? t.label : id; }
+let lastStatus = '';
+function refreshStatus() { if (lastStatus) $status.textContent = lastStatus; }
+function setStatus(text, cls) { $status.textContent = text;
+    if (text.indexOf('Translating') === -1) lastStatus = text; $dot.className = 'sf-dot' + (cls ? ' ' + cls : ''); }
+
+async function load() {
+    if (state.loading) return;
+    state.loading = true; $refresh.disabled = true; $prog.style.width = '40%';
+    setStatus('Loading the wire…', '');
+
+    let data = null, err = null;
+    for (const ep of ENDPOINTS) {
+        try {
+            const res = await fetch(ep(), { cache: 'no-store' });
+            if (!res.ok) { err = 'HTTP ' + res.status; continue; }
+            data = await res.json(); break;
+        } catch (e) { err = e.message; }
+    }
+    $prog.style.width = '100%';
+
+    if (!data || !Array.isArray(data.items)) {
+        state.loading = false; $refresh.disabled = false; $prog.style.width = '0';
+        setStatus('The wire could not be read' + (err ? ' (' + err + ')' : '') + '. Press Refresh.', 'error');
+        render(); return;
+    }
+
+    state.items = data.items.map(i => ({
+        title: i.t, link: i.u, outlet: i.o, lang: i.g, region: i.r,
+        ts: i.d, snippet: i.s, topics: (i.x && i.x.length) ? i.x : ['other'],
+        score: i.p || 0,
+        ll: (i.ll && i.ll.length === 2) ? i.ll : null, pin: i.pn || null, pa: !!i.pa, why: i.y || [], places: i.w || ['unlocated'],
+        standing: i.st || 'press', kinds: (i.k && i.k.length) ? i.k : ['harm'],
+        subs: i.sr || ['unlocated'], spots: i.pl || ['unlocated']
+    }));
+    state.docScore = data.notable_score || 3;
+    state.standings = data.standings || [];
+    state.kindList = data.kinds || [];
+    state.topics = data.topics || [];
+    state.languages = data.languages || {};
+    state.geo = data.geo || [];
+    state.sources = data.sources || [];
+    state.coords = data.coords || {};
+    state.seed = data.seed || null;
+    state.generated = data.generated ? Date.parse(data.generated) : null;
+
+    buildChips(); renderSources();
+
+    const c = data.counts || {};
+    const ageH = state.generated ? (Date.now() - state.generated) / 3600000 : null;
+    const docd = state.items.filter(i => i.score >= state.docScore).length;
+    setStatus(
+        (c.stories || state.items.length) + ' stories · ' + docd + ' well-documented · ' + (c.too_local ? c.too_local + ' too local · ' : '') +
+        (c.refused ? c.refused + ' refused · ' : '') +
+        (c.languages || new Set(state.items.map(i => i.lang)).size) + ' languages · ' +
+        (state.seed
+            ? 'seeded from the anti-slavery map\'s wire, newest story ' + (state.generated ? timeAgo(state.generated) : 'unknown') + '; the first harvest replaces it'
+            : (c.wires_ok || '?') + '/' + (c.wires_total || '?') + ' wires answered · harvested ' +
+              (state.generated ? timeAgo(state.generated) : 'unknown')),
+        ageH !== null && ageH > 6 ? 'idle' : ''
+    );
+
+    state.loading = false; $refresh.disabled = false;
+    setTimeout(() => { $prog.style.width = '0'; }, 400);
+    render();
+}
+
+function withinWindow(i, win) {
+    const w = WINDOWS.find(w => w.id === (win || state.when));
+    if (!w || !w.ms) return true;
+    if (!i.ts) return false;
+    const age = Date.now() - i.ts;
+    return w.older ? age > w.ms : age <= w.ms;
+}
+
+function visible() {
+    const q = state.query.toLowerCase();
+    return state.items.filter(i => {
+        if (state.topic !== 'all' && i.topics.indexOf(state.topic) === -1) return false;
+        if (state.standing !== 'all' && i.standing !== state.standing) return false;
+        if (state.kind !== 'all' && i.kinds.indexOf(state.kind) === -1) return false;
+        if (state.evidence === 'doc' && i.score < state.docScore) return false;
+        if (state.place !== 'all' && i.places.indexOf(state.place) === -1) return false;
+        if (state.sub !== 'all' && i.subs.indexOf(state.sub) === -1) return false;
+        if (state.spot !== 'all' && i.spots.indexOf(state.spot) === -1) return false;
+        if (state.langs.size && !state.langs.has(i.lang)) return false;
+        if (!withinWindow(i)) return false;
+        if (q && (i.title + ' ' + i.snippet + ' ' + i.outlet).toLowerCase().indexOf(q) === -1) return false;
+        return true;
+    }).sort(SORTS[state.sort] || SORTS.new);
+}
+
+const SORTS = {
+    new: (a, b) => (b.ts || 0) - (a.ts || 0),
+    old: (a, b) => (a.ts || 0) - (b.ts || 0),
+    doc: (a, b) => (b.score - a.score) || ((b.ts || 0) - (a.ts || 0)),
+    lang: (a, b) => langName(a.lang).localeCompare(langName(b.lang)) || ((b.ts || 0) - (a.ts || 0))
+};
+
+function render() {
+    const items = visible(), slice = items.slice(0, state.shown);
+    if (!slice.length) {
+        $list.innerHTML = '<div class="sf-state">' + (
+            state.loading ? 'Loading the wire…'
+            : state.items.length ? '<strong>Nothing matches these filters.</strong><br>Widen the window, the subject or the language.'
+            : '<strong>No stories loaded.</strong><br>Press Refresh, or check that the harvester has run.'
+        ) + '</div>';
+    } else {
+        $list.innerHTML = slice.map(i => {
+            const tags = i.topics.map(id => {
+                const c = TOPIC_COLOR[id] || '#a49f98';
+                return '<span class="sf-t" style="color:' + c + ';border-color:' + c + '55">' + esc(topicLabel(id)) + '</span>';
+            }).join('');
+            const documented = i.score >= state.docScore;
+            const sc = STANDING_COLOR[i.standing] || '#a49f98';
+            const stLabel = (state.standings.find(s => s.id === i.standing) || {}).label || i.standing;
+            const pips = '<span class="sf-scale" title="evidence score ' + i.score + '">' +
+                [1,2,3,4,5].map(n => '<span class="sf-pip' + (n <= Math.min(i.score,5) ? ' on' : '') + '"></span>').join('') +
+                '</span>';
+            return '<a class="sf-item' + (documented ? ' watch' : '') + '" href="' + esc(i.link) + '" target="_blank" rel="noopener noreferrer">' +
+                '<div class="sf-meta"><span class="sf-lang">' + esc(langName(i.lang)) + '</span>' +
+                '<span class="sf-standing" style="color:' + sc + ';border-color:' + sc + '55">' + esc(stLabel) + '</span>' +
+                i.kinds.map(k => {
+                    const kc = KIND_COLOR[k] || '#a49f98';
+                    const kl = (state.kindList.find(x => x.id === k) || {}).label || k;
+                    return '<span class="sf-standing" style="color:' + kc + ';border-color:' + kc + '55">' + esc(kl) + '</span>';
+                }).join('') +
+                '<span>' + esc(i.outlet) + '</span>' +
+                '<span>' + esc(placeLabel(i)) + '</span>' +
+                pips + (i.why.length ? '<span class="sf-why">' + esc(i.why.join(' · ')) + '</span>' : '') +
+                '<span>' + timeAgo(i.ts) + '</span>' +
+                (state.tl !== 'off' ? '<span class="sf-mt">machine translation</span>' : '') +
+                '</div>' +
+                '<div class="sf-item-title"' + (state.tl !== 'off' ? ' title="' + esc(i.title) + '"' : '') + '>' + esc(trText(i.title, state.tl)) + '</div>' +
+                (i.snippet ? '<div class="sf-snip">' + esc(trText(i.snippet, state.tl)) + '</div>' : '') +
+                '<div class="sf-tags">' + tags + '</div></a>';
+        }).join('');
+        if (items.length > state.shown) {
+            $more.textContent = 'Show more (' + (items.length - state.shown) + ' remaining)';
+            $list.appendChild($more);
+        } else {
+            // the list scrolls inside its own box, so mark where the bottom is
+            const end = document.createElement('div');
+            end.className = 'sf-state';
+            end.style.padding = '0.7rem';
+            end.style.fontSize = '0.62rem';
+            end.textContent = 'End of ' + items.length + ' ' + (items.length === 1 ? 'story' : 'stories');
+            $list.appendChild(end);
+        }
+    }
+    chipCounts();
+    renderMap(items);
+}
+
+function chip(row, key, value, label, color) {
+    const c = document.createElement('button');
+    c.className = 'sf-chip';
+    c.dataset[key] = value;
+    if (color) c.style.setProperty('--chipcolor', color);
+    c.innerHTML = esc(label) + ' <span class="sf-n"></span>';
+    row.appendChild(c);
+    return c;
+}
+
+function buildChips() {
+    [$topicRow, $geoRow, $standingRow, $kindRow, $evidenceRow, $langRow, $whenRow].forEach(r => r.querySelectorAll('.sf-chip').forEach(c => c.remove()));
+
+    chip($topicRow, 'topic', 'all', 'All').classList.add('on');
+    state.topics.forEach(t => chip($topicRow, 'topic', t.id, t.label, TOPIC_COLOR[t.id]));
+
+    chip($geoRow, 'place', 'all', 'Everywhere').classList.add('on');
+    state.geo.forEach(g => {
+        const c = chip($geoRow, 'place', g.id, g.label);
+        if (g.id === state.place) c.classList.add('on');
+    });
+    buildDrilldown();
+
+    chip($standingRow, 'standing', 'all', 'All').classList.add('on');
+    state.standings.forEach(st => {
+        const c = chip($standingRow, 'standing', st.id, st.label);
+        c.style.setProperty('--chipcolor', STANDING_COLOR[st.id] || '#d8d5cd');
+        if (st.id === state.standing) c.classList.add('on');
+    });
+
+    chip($kindRow, 'kind', 'all', 'Both').classList.add('on');
+    (state.kindList || []).forEach(k => {
+        const c = chip($kindRow, 'kind', k.id, k.label);
+        c.style.setProperty('--chipcolor', KIND_COLOR[k.id] || '#d8d5cd');
+        if (k.id === state.kind) c.classList.add('on');
+    });
+
+    EVIDENCE.forEach(e => {
+        const c = chip($evidenceRow, 'evidence', e.id, e.label);
+        if (e.id === state.evidence) c.classList.add('on');
+    });
+
+    // an explicit All chip: without one the only way back from a single
+    // language was to untick it again
+    const allLang = chip($langRow, 'lang', 'all', 'All languages');
+    if (!state.langs.size) allLang.classList.add('on');
+    Object.keys(state.languages).sort((a, b) => langName(a).localeCompare(langName(b)))
+        .forEach(code => chip($langRow, 'lang', code, langName(code)));
+
+    WINDOWS.forEach(w => {
+        const c = chip($whenRow, 'when', w.id, w.label);
+        if (w.id === state.when) c.classList.add('on');
+    });
+
+}
+
+function buildDrilldown() {
+    [$subRow, $placeRow].forEach(r => r.querySelectorAll('.sf-chip').forEach(c => c.remove()));
+    const region = state.geo.find(g => g.id === state.place);
+    if (!region || !region.subs || !region.subs.length) {
+        $subRow.style.display = 'none';
+        $placeRow.style.display = 'none';
+        state.sub = 'all'; state.spot = 'all';
+        return;
+    }
+    $subRow.style.display = '';
+    const allSub = chip($subRow, 'sub', 'all', 'All of ' + region.label);
+    if (state.sub === 'all') allSub.classList.add('on');
+    region.subs.forEach(sb => {
+        const c = chip($subRow, 'sub', sb.id, sb.label);
+        if (sb.id === state.sub) c.classList.add('on');
+    });
+
+    const sub = region.subs.find(sb => sb.id === state.sub);
+    if (!sub || !sub.places || !sub.places.length) {
+        $placeRow.style.display = 'none';
+        state.spot = 'all';
+        return;
+    }
+    $placeRow.style.display = '';
+    const allSpot = chip($placeRow, 'spot', 'all', 'All of ' + sub.label);
+    if (state.spot === 'all') allSpot.classList.add('on');
+    sub.places.forEach(pl => {
+        const c = chip($placeRow, 'spot', pl.id, pl.label);
+        if (pl.id === state.spot) c.classList.add('on');
+    });
+}
+
+function chipCounts() {
+    const q = state.query.toLowerCase();
+    const base = state.items.filter(i =>
+        (!q || (i.title + ' ' + i.snippet).toLowerCase().indexOf(q) !== -1) && withinWindow(i));
+    $topicRow.querySelectorAll('.sf-chip').forEach(c => {
+        const id = c.dataset.topic;
+        const n = id === 'all' ? base.length : base.filter(i => i.topics.indexOf(id) !== -1).length;
+        c.querySelector('.sf-n').textContent = n;
+        c.classList.toggle('empty', n === 0 && id !== 'all');
+    });
+    $subRow.querySelectorAll('.sf-chip').forEach(c => {
+        const id = c.dataset.sub;
+        const n = id === 'all'
+            ? base.filter(i => state.place === 'all' || i.places.indexOf(state.place) !== -1).length
+            : base.filter(i => i.subs.indexOf(id) !== -1).length;
+        c.querySelector('.sf-n').textContent = n;
+        c.classList.toggle('empty', n === 0 && id !== 'all');
+    });
+    $placeRow.querySelectorAll('.sf-chip').forEach(c => {
+        const id = c.dataset.spot;
+        const n = id === 'all'
+            ? base.filter(i => state.sub === 'all' || i.subs.indexOf(state.sub) !== -1).length
+            : base.filter(i => i.spots.indexOf(id) !== -1).length;
+        c.querySelector('.sf-n').textContent = n;
+        c.classList.toggle('empty', n === 0 && id !== 'all');
+    });
+    $geoRow.querySelectorAll('.sf-chip').forEach(c => {
+        const g = c.dataset.place;
+        const n = g === 'all' ? base.length : base.filter(i => i.places.indexOf(g) !== -1).length;
+        c.querySelector('.sf-n').textContent = n;
+        c.classList.toggle('empty', n === 0 && g !== 'all');
+    });
+    $standingRow.querySelectorAll('.sf-chip').forEach(c => {
+        const r = c.dataset.standing;
+        const n = r === 'all' ? base.length : base.filter(i => i.standing === r).length;
+        c.querySelector('.sf-n').textContent = n;
+        c.classList.toggle('empty', n === 0 && r !== 'all');
+    });
+    $kindRow.querySelectorAll('.sf-chip').forEach(c => {
+        const k = c.dataset.kind;
+        const n = k === 'all' ? base.length : base.filter(i => i.kinds.indexOf(k) !== -1).length;
+        c.querySelector('.sf-n').textContent = n;
+        c.classList.toggle('empty', n === 0 && k !== 'all');
+    });
+    $evidenceRow.querySelectorAll('.sf-chip').forEach(c => {
+        const id = c.dataset.evidence;
+        c.querySelector('.sf-n').textContent =
+            id === 'doc' ? base.filter(i => i.score >= state.docScore).length : base.length;
+    });
+    $langRow.querySelectorAll('.sf-chip').forEach(c => {
+        const code = c.dataset.lang;
+        const n = code === 'all' ? base.length : base.filter(i => i.lang === code).length;
+        c.querySelector('.sf-n').textContent = n;
+        c.classList.toggle('empty', n === 0 && code !== 'all');
+    });
+    $whenRow.querySelectorAll('.sf-chip').forEach(c => {
+        const n = state.items.filter(i => withinWindow(i, c.dataset.when)).length;
+        c.querySelector('.sf-n').textContent = n;
+        // the archive chip only appears once there is an archive
+        if (c.dataset.when === 'older') c.style.display = n ? '' : 'none';
+    });
+}
+
+function renderSources() {
+    $srcGrid.innerHTML = state.sources.map(s =>
+        '<div class="sf-src ' + (s.ok || s.pending ? '' : 'fail') + '"><span>' + esc(s.name) + '</span>' +
+        '<span>' + (s.ok ? s.kept + ' kept' + (s.small ? ' · ' + s.small + ' too local' : '') +
+            (s.refused ? ' · ' + s.refused + ' refused' : '') : (s.pending ? 'not read yet' : 'unreachable')) +
+        '</span></div>').join('');
+}
+
+/* ---- Wiring ---- */
+function single(row, key) {
+    row.addEventListener('click', e => {
+        const c = e.target.closest('.sf-chip'); if (!c) return;
+        state[key] = c.dataset[key]; state.shown = 50;
+        row.querySelectorAll('.sf-chip').forEach(x => x.classList.toggle('on', x === c));
+        render();
+    });
+}
+single($topicRow, 'topic');
+single($standingRow, 'standing');
+single($evidenceRow, 'evidence');
+single($kindRow, 'kind');
+$geoRow.addEventListener('click', e => {
+    const c = e.target.closest('.sf-chip'); if (!c) return;
+    state.place = c.dataset.place; state.sub = 'all'; state.spot = 'all'; state.shown = 50;
+    $geoRow.querySelectorAll('.sf-chip').forEach(x => x.classList.toggle('on', x === c));
+    buildDrilldown(); render(); fitToSelection();
+});
+$subRow.addEventListener('click', e => {
+    const c = e.target.closest('.sf-chip'); if (!c) return;
+    state.sub = c.dataset.sub; state.spot = 'all'; state.shown = 50;
+    buildDrilldown(); render(); fitToSelection();
+});
+$placeRow.addEventListener('click', e => {
+    const c = e.target.closest('.sf-chip'); if (!c) return;
+    state.spot = c.dataset.spot; state.shown = 50;
+    $placeRow.querySelectorAll('.sf-chip').forEach(x => x.classList.toggle('on', x === c));
+    render();
+});
+single($whenRow, 'when');
+
+$langRow.addEventListener('click', e => {
+    const c = e.target.closest('.sf-chip'); if (!c) return;
+    const code = c.dataset.lang;
+    if (code === 'all') {
+        state.langs.clear();
+    } else if (state.langs.has(code)) {
+        state.langs.delete(code);
+    } else {
+        state.langs.add(code);
+    }
+    // All is lit exactly when no single language is picked
+    $langRow.querySelectorAll('.sf-chip').forEach(x => x.classList.toggle('on',
+        x.dataset.lang === 'all' ? !state.langs.size : state.langs.has(x.dataset.lang)));
+    state.shown = 50; render();
+});
+
+$refresh.addEventListener('click', load);
+$sort.addEventListener('change', () => { state.sort = $sort.value; state.shown = 50; render(); });
+document.getElementById('sfClear').addEventListener('click', () => {
+    state.topic = 'all'; state.standing = 'all'; state.evidence = 'all'; state.place = 'all';
+    state.kind = 'all'; state.sub = 'all'; state.spot = 'all';
+    state.langs.clear(); state.when = 'all';
+    state.query = ''; state.shown = 50; $search.value = '';
+    state.sort = 'new'; $sort.value = 'new';
+    $topicRow.querySelectorAll('.sf-chip').forEach(c => c.classList.toggle('on', c.dataset.topic === 'all'));
+    $standingRow.querySelectorAll('.sf-chip').forEach(c => c.classList.toggle('on', c.dataset.standing === 'all'));
+    $evidenceRow.querySelectorAll('.sf-chip').forEach(c => c.classList.toggle('on', c.dataset.evidence === 'all'));
+    $kindRow.querySelectorAll('.sf-chip').forEach(c => c.classList.toggle('on', c.dataset.kind === 'all'));
+    $geoRow.querySelectorAll('.sf-chip').forEach(c => c.classList.toggle('on', c.dataset.place === 'all'));
+    buildDrilldown();
+    $langRow.querySelectorAll('.sf-chip').forEach(c => c.classList.toggle('on', c.dataset.lang === 'all'));
+    $whenRow.querySelectorAll('.sf-chip').forEach(c => c.classList.toggle('on', c.dataset.when === 'all'));
+    render();
+});
+let timer;
+$search.addEventListener('input', e => {
+    clearTimeout(timer); const v = e.target.value;
+    timer = setTimeout(() => { state.query = v; state.shown = 50; render(); }, 180);
+});
+
+document.querySelectorAll('.sf-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+        const sheet = document.getElementById(tab.dataset.sheet);
+        const opening = !sheet.classList.contains('open');
+        document.querySelectorAll('.sf-sheet').forEach(s => s.classList.remove('open'));
+        document.querySelectorAll('.sf-tab').forEach(t => t.classList.remove('on'));
+        if (opening) { sheet.classList.add('open'); tab.classList.add('on'); }
+    });
+});
+document.querySelectorAll('.sf-sheet [data-close]').forEach(b => {
+    b.addEventListener('click', () => {
+        b.closest('.sf-sheet').classList.remove('open');
+        document.querySelectorAll('.sf-tab').forEach(t => t.classList.remove('on'));
+    });
+});
+document.addEventListener('keydown', e => {
+    if (e.key !== 'Escape') return;
+    document.querySelectorAll('.sf-sheet').forEach(s => s.classList.remove('open'));
+    document.querySelectorAll('.sf-tab').forEach(t => t.classList.remove('on'));
+});
+
+
+/* translation control */
+(function () {
+    const sel = document.getElementById('sfTr');
+    if (!sel) return;
+    TR_LANGS.forEach(pair => {
+        const o = document.createElement('option');
+        o.value = pair[0]; o.textContent = pair[1];
+        sel.appendChild(o);
+    });
+    sel.value = 'off';
+    sel.addEventListener('change', () => {
+        state.tl = sel.value;
+        state.shown = 50;
+        render();
+        if (state.tl === 'off') { refreshStatus(); return; }
+        const onscreen = visible().slice(0, state.shown);
+        setStatus('Translating ' + onscreen.length + ' headlines…', '');
+        trFill(onscreen, state.tl, () => { render(); refreshStatus(); });
+    });
+})();
+
+load();
+setInterval(() => { if (!document.hidden) load(); }, 15 * 60 * 1000);
+
+/* ================= the map ================= */
+let sfMap = null, sfLayer = null, mapBroken = false, sfPins = [];
+let satFills = [], satParts = [];
+const SAT = {
+    sat: 1.15,    // above 1, so surfaces stay different from each other
+    con: 1.05,
+    bright: 1.06,
+    hue: -6,      // degrees, warms the greens off satellite's blue-green
+    green: 0.30,  // soft-light green over land: tints without flattening
+    warm: 0.18,   // overlay stone: lifts highlights without a colour cast
+    sea: 0.55,
+    shade: 0.45   // relief: the sculpted part
+};
+const FAN_STEP = 8.5;
+const GOLDEN_ANGLE = Math.PI * (3 - Math.sqrt(5));
+const FAN_ZOOM_FLOOR = 5;
+const PIN_NEIGHBOUR_PX = 14;   // pins this close on screen open in one popup
+
+function initMap() {
+    if (sfMap || typeof L === 'undefined' || mapBroken) return;
+    const el = document.getElementById('sfMap');
+    if (!el) return;
+    sfMap = L.map(el, { worldCopyJump: true, zoomControl: true, attributionControl: true })
+             .setView([20, 10], 1);
+    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+        maxZoom: 16,
+        noWrap: true,
+        bounds: [[-85.05, -180], [85.05, 180]],
+        updateWhenZooming: false,
+        keepBuffer: 2,
+        attribution: 'Imagery © Esri, Maxar, Earthstar Geographics'
+    }).addTo(sfMap);
+    sfLayer = L.layerGroup().addTo(sfMap);
+    dressSatellite();
+    setTimeout(() => sfMap.invalidateSize(), 60);
+    window.addEventListener('resize', () => sfMap.invalidateSize());
+}
+
+function dressSatellite() {
+    if (!sfMap || typeof L === 'undefined') return;
+    try {
+        const pane = (name, z, blend) => {
+            if (!sfMap.getPane(name)) sfMap.createPane(name);
+            const el = sfMap.getPane(name);
+            el.style.zIndex = z;
+            el.style.pointerEvents = 'none';
+            if (blend) el.style.mixBlendMode = blend;
+            return el;
+        };
+        const fillPane = (name, z, blend, colour, opacity) => {
+            const el = pane(name, z, blend);
+            const d = document.createElement('div');
+            d.style.cssText = 'position:absolute;left:0;top:0;width:100%;height:100%;background:' +
+                              colour + ';opacity:' + opacity + ';';
+            el.appendChild(d);
+            satFills.push(d);
+            satParts.push(el);
+            return { el: el, fill: d };
+        };
+
+        // the imagery's own filter
+        const sp = sfMap.getPane('tilePane');
+        if (sp) sp.style.filter = 'saturate(' + SAT.sat + ') contrast(' + SAT.con +
+            ') brightness(' + SAT.bright + ') hue-rotate(' + SAT.hue + 'deg)';
+
+        // water first, under the land washes, so the sea is softened by them
+        const seaL = fillPane('satSea', 205, 'screen', '#0f3b52', SAT.sea);
+        // soft-light rather than color: it shifts hue in proportion to how light
+        // a pixel already is, so ploughland goes green and dark rock stays dark
+        const greenL = fillPane('satWash', 210, 'soft-light', '#66784f', SAT.green);
+        // overlay lifts highlights and deepens shadows at once — most of what
+        // makes a map read as lit rather than scanned
+        const warmL = fillPane('satWarm', 214, 'overlay', '#9a9388', SAT.warm);
+
+        const shadeEl = pane('satShade', 220, 'multiply');
+        satParts.push(shadeEl);
+        const shade = L.tileLayer(
+            'https://services.arcgisonline.com/arcgis/rest/services/Elevation/World_Hillshade/MapServer/tile/{z}/{y}/{x}',
+            { pane: 'satShade', opacity: SAT.shade, maxZoom: 16, maxNativeZoom: 16,
+              noWrap: true, bounds: [[-85.05, -180], [85.05, 180]],
+              updateWhenZooming: false, keepBuffer: 2, attribution: 'Hillshade © Esri' });
+
+        // a layer that cannot load is dropped rather than left half-drawn
+        const guard = (layer, name, onGone) => {
+            let n = 0;
+            layer.on('tileerror', () => {
+                if (++n === 12) {
+                    try { sfMap.removeLayer(layer); } catch (e) { /* already gone */ }
+                    try { onGone && onGone(); } catch (e) { /* nothing to undo */ }
+                    console.warn('map: ' + name + ' failed repeatedly; dropped');
+                }
+            });
+            layer.addTo(sfMap);
+        };
+        guard(shade, 'hillshade', () => {
+            // without relief the washes are just a colour cast on a photograph
+            greenL.el.style.display = 'none';
+            warmL.el.style.display = 'none';
+            if (sp) sp.style.filter = '';
+        });
+
+        sfMap.on('zoomend', resizePins);
+
+        // A flat fill inside a Leaflet pane is nailed to the map, not the screen:
+        // pan far enough and its edge crosses the view as a hard line. These
+        // carry no geography, so they follow the screen instead — repositioned
+        // against the map pane's own offset on every move.
+        const cover = () => {
+            try {
+                const mp = sfMap.getPanes().mapPane;
+                const o = L.DomUtil.getPosition(mp) || { x: 0, y: 0 };
+                const sz = sfMap.getSize();
+                const m = 400;
+                satFills.forEach(d => {
+                    d.style.left = (-o.x - m) + 'px';
+                    d.style.top = (-o.y - m) + 'px';
+                    d.style.width = (sz.x + m * 2) + 'px';
+                    d.style.height = (sz.y + m * 2) + 'px';
+                });
+            } catch (e) { /* mid-gesture, next move fixes it */ }
+        };
+
+        // Tints ease off as you zoom in: wide out they do the work, close in
+        // they cover the detail somebody zoomed in to see. Relief does the
+        // reverse — it is wanted more at valley scale.
+        const ramp = () => {
+            try {
+                const z = sfMap.getZoom();
+                const t = z <= 6 ? 1 : z >= 13 ? 0.45 : 1 - (z - 6) * (0.55 / 7);
+                greenL.fill.style.opacity = SAT.green * t;
+                warmL.fill.style.opacity = SAT.warm * t;
+                seaL.fill.style.opacity = SAT.sea * (z <= 6 ? 1 : 0.7);
+                shade.setOpacity(z <= 4 ? SAT.shade * 0.8 : SAT.shade);
+            } catch (e) { /* not ready yet */ }
+        };
+        sfMap.on('zoomend', ramp);
+        sfMap.on('move zoom zoomend moveend resize viewreset', cover);
+        sfMap.whenReady(() => { ramp(); cover(); });
+        ramp(); cover();
+    } catch (err) {
+        console.warn('map: satellite treatment skipped:', err);
+    }
+}
+
+function renderMap(items) {
+    try { renderMapInner(items); }
+    catch (err) {
+        // a broken map is a missing panel, never a missing feed
+        mapBroken = true;
+        const wrap = document.getElementById('sfMapWrap');
+        if (wrap) wrap.style.display = 'none';
+        console.warn('map disabled:', err);
+    }
+}
+
+function renderMapInner(items) {
+    if (typeof L === 'undefined' || mapBroken) {
+        const wrap = document.getElementById('sfMapWrap');
+        if (wrap) wrap.style.display = 'none';
+        return;
+    }
+    initMap();
+    if (!sfMap || !sfLayer) return;
+    sfLayer.clearLayers();
+    sfPins = [];
+
+    // Every story gets its own pin. Stories resolving to the same place would
+    // otherwise sit on top of each other, so each is nudged onto a ring around
+    // the point — deterministic, so a pin does not move between renders.
+    const seenAt = new Map();
+    let mapped = 0, unplaced = 0, approx = 0;
+
+    items.forEach(i => {
+        if (!i.ll || i.ll.length !== 2) { unplaced++; return; }
+        mapped++;
+        if (i.pa) approx++;
+        const key = i.ll[0] + ',' + i.ll[1];
+        const n = seenAt.get(key) || 0;
+        seenAt.set(key, n + 1);
+
+        /* Where a story sits when others share its coordinate — see fanOffset. */
+        const off = n > 0 ? fanOffset(n, i.link) : { dx: 0, dy: 0 };
+
+        const entry = { item: i, at: i.ll.slice(), base: key, dx: off.dx, dy: off.dy,
+                        colour: TOPIC_COLOR[i.topics[0]] || '#a49f98',
+                        full: i.score >= state.docScore ? 13 : 10,
+                        approx: !!i.pa,
+                        dim: n > 0 ? 0.92 : 1 };
+        entry.at = fanned(entry);
+        const marker = L.marker(entry.at, { icon: pinIcon(entry), title: i.title }).addTo(sfLayer);
+        entry.marker = marker;
+        sfPins.push(entry);
+        marker.on('click', () => openPinPopup(entry));
+    });
+
+    const c = document.getElementById('sfMapCount');
+    const u = document.getElementById('sfMapUnplaced');
+    if (c) c.textContent = mapped + (mapped === 1 ? ' story mapped' : ' stories mapped') +
+        (approx ? ' \u00b7 ' + approx + ' by source country' : '');
+    if (u) u.textContent = unplaced ? unplaced + ' unplaced' : '';
+    state.mapped = mapped;
+    state.unplaced = unplaced;
+}
+
+function pointsUnder(regionId, subId, spotId) {
+    const co = state.coords || {};
+    const out = [];
+    const push = (id) => { if (co[id]) out.push(co[id]); };
+    if (spotId && spotId !== 'all') { push(spotId); return out; }
+    (state.geo || []).forEach(r => {
+        if (regionId !== 'all' && r.id !== regionId) return;
+        (r.subs || []).forEach(sb => {
+            if (subId && subId !== 'all' && sb.id !== subId) return;
+            (sb.places || []).forEach(pl => push(pl.id));
+            if (!(sb.places || []).length) push(sb.id);
+        });
+        // the region's own centroid only if nothing beneath it was placeable,
+        // otherwise it drags the frame away from the places it contains
+        if (!out.length) push(r.id);
+    });
+    return out;
+}
+
+function fitToSelection() {
+    if (!sfMap || mapBroken || typeof L === 'undefined') return;
+    try {
+        if (state.place === 'all') {
+            sfMap.setView([20, 10], 1);
+            return;
+        }
+        const pts = pointsUnder(state.place, state.sub, state.spot);
+        if (!pts.length) return;
+        if (pts.length === 1) {
+            sfMap.setView(pts[0], state.spot !== 'all' ? 6 : 4);
+            return;
+        }
+        sfMap.fitBounds(L.latLngBounds(pts), { padding: [24, 24], maxZoom: 7, animate: true });
+    } catch (err) {
+        console.warn('map could not frame the selection:', err);
+    }
+}
+
+function hashSeed(str) {
+    let h = 2166136261;
+    for (let i = 0; i < str.length; i++) {
+        h ^= str.charCodeAt(i);
+        h = Math.imul(h, 16777619);
+    }
+    return (h >>> 0) / 4294967296;        // 0…1, stable for a given link
+}
+
+function fanOffset(n, link) {
+    const j = hashSeed(link || String(n));
+    const angle = n * GOLDEN_ANGLE + (j - 0.5) * 0.7;
+    const r = FAN_STEP * Math.sqrt(n) * (0.85 + j * 0.3);
+    return { dx: Math.cos(angle) * r, dy: Math.sin(angle) * r };
+}
+
+function fanned(entry) {
+    if (!entry.dx && !entry.dy) return entry.item.ll;
+    let z = FAN_ZOOM_FLOOR;
+    try { z = Math.max(FAN_ZOOM_FLOOR, sfMap.getZoom()); } catch (e) { /* not ready */ }
+    const unit = 360 / (256 * Math.pow(2, z));
+    const lat = entry.item.ll[0], lon = entry.item.ll[1];
+    const cos = Math.max(0.2, Math.cos(lat * Math.PI / 180));
+    return [lat + entry.dy * unit * cos, lon + entry.dx * unit];
+}
+
+function pinScale() {
+    let z = 3;
+    try { z = sfMap.getZoom(); } catch (e) { /* not ready; assume mid */ }
+    if (z <= 1) return 0.52;
+    if (z >= 6) return 1;
+    return 0.52 + (z - 1) * (0.48 / 5);
+}
+
+function pinIcon(entry) {
+    const size = Math.max(5, Math.round(entry.full * pinScale()));
+    const thin = size < 9 ? ' sf-pin-sm' : '';
+    return L.divIcon({
+        className: '',
+        html: '<div class="sf-pin' + thin + (entry.approx ? ' sf-pin-approx' : '') + '" style="width:' + size + 'px;height:' + size +
+              'px;background:' + entry.colour + ';color:' + entry.colour + ';opacity:' + entry.dim + ';"></div>',
+        iconSize: [size, size], iconAnchor: [size / 2, size / 2]
+    });
+}
+
+function resizePins() {
+    try {
+        sfPins.forEach(e => {
+            e.marker.setIcon(pinIcon(e));
+            if (e.dx || e.dy) {
+                e.at = fanned(e);
+                e.marker.setLatLng(e.at);
+            }
+        });
+    } catch (err) { /* mid-render */ }
+}
+
+function neighboursOf(entry) {
+    const group = [entry];
+    if (!sfMap) return group;
+    let here;
+    try { here = sfMap.latLngToContainerPoint(entry.at); }
+    catch (e) { return group; }
+    sfPins.forEach(other => {
+        if (other === entry) return;
+        if (other.base === entry.base) { group.push(other); return; }   // same place, always
+        try {
+            const p = sfMap.latLngToContainerPoint(other.at);
+            const dx = p.x - here.x, dy = p.y - here.y;
+            if (Math.sqrt(dx * dx + dy * dy) <= PIN_NEIGHBOUR_PX) group.push(other);
+        } catch (e) { /* ignore an unplottable neighbour */ }
+    });
+    return group;
+}
+
+function openPinPopup(entry) {
+    if (!sfMap) return;
+    const group = neighboursOf(entry);
+    const places = [];
+    group.forEach(g => {
+        const nm = placeLabel(g.item);
+        if (places.indexOf(nm) === -1) places.push(nm);
+    });
+    const head = '<div class="sf-pop-place">' + esc(places.slice(0, 3).join(' · ')) +
+                 (group.length > 1 ? ' · ' + group.length + ' stories here' : '') + '</div>';
+    const rows = group.slice(0, 20).map((g, n) =>
+        '<a href="' + esc(g.item.link) + '" target="_blank" rel="noopener noreferrer"' +
+        (n === 0 && group.length > 1 ? ' class="sf-pop-first"' : '') + '>' +
+        esc(trText(g.item.title, state.tl)) +
+        '<span class="sf-pop-src">' + esc(g.item.outlet) +
+        (places.length > 1 ? ' · ' + esc(placeLabel(g.item)) : '') + '</span></a>').join('');
+    const more = group.length > 20 ? '<div class="sf-pop-place">and ' + (group.length - 20) + ' more</div>' : '';
+    L.popup({ maxWidth: 300, autoPan: true })
+     .setLatLng(entry.at)
+     .setContent(head + rows + more)
+     .openOn(sfMap);
+}
+
+})();
+</script>
+</body>
+</html>

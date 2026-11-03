@@ -1,0 +1,1553 @@
+{
+ "_note": "Wires for the Global Wire on forced labour, modern slavery, trafficking and child labour. harvest_slavery.py reads this and writes wire_slavery.json. Each wire carries a 'standing': official (UN bodies, courts, state agencies), labour (anti-slavery organisations, unions and worker groups), research (rights research), field (investigative and field press), or press. 'direct' and 'events' are the anti-slavery map's WIRE_FEEDS, with four bodies-and-courts wires the Indigenous feed already reads and a few site searches added; each carried Google News query keeps its old name in 'was'. 'gnews' asks the same subject in 24 languages, in the country editions the Indigenous feed uses, split into slices so no single search hits Google News's ~100-result cap.",
+ "direct": [
+  {
+   "name": "UN News — Human Rights",
+   "lang": "en",
+   "standing": "official",
+   "url": "https://news.un.org/feed/subscribe/en/news/topic/human-rights/feed/rss.xml"
+  },
+  {
+   "name": "OHCHR — news",
+   "lang": "en",
+   "standing": "official",
+   "url": "https://www.ohchr.org/en/rss/news"
+  },
+  {
+   "name": "JURIST — legal news",
+   "lang": "en",
+   "standing": "official",
+   "url": "https://www.jurist.org/news/feed/"
+  },
+  {
+   "name": "Amnesty International",
+   "lang": "en",
+   "standing": "research",
+   "url": "https://www.amnesty.org/en/rss/"
+  },
+  {
+   "name": "The Guardian — Rights & Freedom",
+   "lang": "en",
+   "standing": "press",
+   "url": "https://www.theguardian.com/global-development/rights-and-freedom/rss"
+  },
+  {
+   "name": "The Guardian — Global development",
+   "lang": "en",
+   "standing": "press",
+   "url": "https://www.theguardian.com/global-development/rss"
+  },
+  {
+   "name": "Human Rights Watch",
+   "lang": "en",
+   "standing": "research",
+   "url": "https://www.hrw.org/rss/news"
+  },
+  {
+   "name": "Mongabay",
+   "lang": "en",
+   "standing": "field",
+   "url": "https://news.mongabay.com/feed/"
+  },
+  {
+   "name": "Anti-Slavery International",
+   "lang": "en",
+   "standing": "labour",
+   "url": "https://www.antislavery.org/feed/"
+  },
+  {
+   "name": "Freedom United",
+   "lang": "en",
+   "standing": "labour",
+   "url": "https://www.freedomunited.org/feed/"
+  },
+  {
+   "name": "Business & Human Rights Resource Centre",
+   "lang": "en",
+   "standing": "research",
+   "url": "https://www.business-humanrights.org/en/latest-news/?format=rss"
+  },
+  {
+   "name": "Equal Times",
+   "lang": "en",
+   "standing": "labour",
+   "url": "https://www.equaltimes.org/spip.php?page=backend"
+  },
+  {
+   "name": "ITUC / LabourStart",
+   "lang": "en",
+   "standing": "labour",
+   "url": "https://www.labourstart.org/rss/"
+  },
+  {
+   "name": "Migrant-Rights.org",
+   "lang": "en",
+   "standing": "labour",
+   "url": "https://www.migrant-rights.org/feed/"
+  },
+  {
+   "name": "Reporter Brasil",
+   "lang": "pt",
+   "standing": "field",
+   "url": "https://reporterbrasil.org.br/feed/"
+  },
+  {
+   "name": "Agencia Brasil — direitos humanos",
+   "lang": "pt",
+   "standing": "press",
+   "url": "https://agenciabrasil.ebc.com.br/rss/direitos-humanos/feed.xml"
+  },
+  {
+   "name": "Al Jazeera",
+   "lang": "en",
+   "standing": "press",
+   "url": "https://www.aljazeera.com/xml/rss/all.xml"
+  },
+  {
+   "name": "The Diplomat",
+   "lang": "en",
+   "standing": "press",
+   "url": "https://thediplomat.com/feed/"
+  },
+  {
+   "name": "IndustriALL Global Union",
+   "lang": "en",
+   "standing": "labour",
+   "url": "https://www.industriall-union.org/rss.xml"
+  }
+ ],
+ "gnews": [
+  {
+   "label": "English (US) 1",
+   "lang": "en",
+   "standing": "press",
+   "hl": "en-US",
+   "gl": "US",
+   "ceid": "US:en",
+   "query": "\"forced labour\" OR \"forced labor\" OR \"modern slavery\" OR \"slave labour\""
+  },
+  {
+   "label": "English (US) 2",
+   "lang": "en",
+   "standing": "press",
+   "hl": "en-US",
+   "gl": "US",
+   "ceid": "US:en",
+   "query": "\"human trafficking\" OR \"labour trafficking\" OR \"labor trafficking\" OR \"debt bondage\" OR \"bonded labour\""
+  },
+  {
+   "label": "English (US) 3",
+   "lang": "en",
+   "standing": "press",
+   "hl": "en-US",
+   "gl": "US",
+   "ceid": "US:en",
+   "query": "\"child labour\" OR \"child labor\" OR \"domestic servitude\" OR \"recruitment fees\""
+  },
+  {
+   "label": "English (GB) 1",
+   "lang": "en",
+   "standing": "press",
+   "hl": "en-GB",
+   "gl": "GB",
+   "ceid": "GB:en",
+   "query": "\"forced labour\" OR \"forced labor\" OR \"modern slavery\" OR \"slave labour\""
+  },
+  {
+   "label": "English (GB) 2",
+   "lang": "en",
+   "standing": "press",
+   "hl": "en-GB",
+   "gl": "GB",
+   "ceid": "GB:en",
+   "query": "\"human trafficking\" OR \"labour trafficking\" OR \"labor trafficking\" OR \"debt bondage\" OR \"bonded labour\""
+  },
+  {
+   "label": "English (GB) 3",
+   "lang": "en",
+   "standing": "press",
+   "hl": "en-GB",
+   "gl": "GB",
+   "ceid": "GB:en",
+   "query": "\"child labour\" OR \"child labor\" OR \"domestic servitude\" OR \"recruitment fees\""
+  },
+  {
+   "label": "English (IN) 1",
+   "lang": "en",
+   "standing": "press",
+   "hl": "en-IN",
+   "gl": "IN",
+   "ceid": "IN:en",
+   "query": "\"forced labour\" OR \"forced labor\" OR \"modern slavery\" OR \"slave labour\""
+  },
+  {
+   "label": "English (IN) 2",
+   "lang": "en",
+   "standing": "press",
+   "hl": "en-IN",
+   "gl": "IN",
+   "ceid": "IN:en",
+   "query": "\"human trafficking\" OR \"labour trafficking\" OR \"labor trafficking\" OR \"debt bondage\" OR \"bonded labour\""
+  },
+  {
+   "label": "English (IN) 3",
+   "lang": "en",
+   "standing": "press",
+   "hl": "en-IN",
+   "gl": "IN",
+   "ceid": "IN:en",
+   "query": "\"child labour\" OR \"child labor\" OR \"domestic servitude\" OR \"recruitment fees\""
+  },
+  {
+   "label": "English (AU) 1",
+   "lang": "en",
+   "standing": "press",
+   "hl": "en-AU",
+   "gl": "AU",
+   "ceid": "AU:en",
+   "query": "\"forced labour\" OR \"forced labor\" OR \"modern slavery\" OR \"slave labour\""
+  },
+  {
+   "label": "English (AU) 2",
+   "lang": "en",
+   "standing": "press",
+   "hl": "en-AU",
+   "gl": "AU",
+   "ceid": "AU:en",
+   "query": "\"human trafficking\" OR \"labour trafficking\" OR \"labor trafficking\" OR \"debt bondage\" OR \"bonded labour\""
+  },
+  {
+   "label": "English (AU) 3",
+   "lang": "en",
+   "standing": "press",
+   "hl": "en-AU",
+   "gl": "AU",
+   "ceid": "AU:en",
+   "query": "\"child labour\" OR \"child labor\" OR \"domestic servitude\" OR \"recruitment fees\""
+  },
+  {
+   "label": "English (CA) 1",
+   "lang": "en",
+   "standing": "press",
+   "hl": "en-CA",
+   "gl": "CA",
+   "ceid": "CA:en",
+   "query": "\"forced labour\" OR \"forced labor\" OR \"modern slavery\" OR \"slave labour\""
+  },
+  {
+   "label": "English (CA) 2",
+   "lang": "en",
+   "standing": "press",
+   "hl": "en-CA",
+   "gl": "CA",
+   "ceid": "CA:en",
+   "query": "\"human trafficking\" OR \"labour trafficking\" OR \"labor trafficking\" OR \"debt bondage\" OR \"bonded labour\""
+  },
+  {
+   "label": "English (CA) 3",
+   "lang": "en",
+   "standing": "press",
+   "hl": "en-CA",
+   "gl": "CA",
+   "ceid": "CA:en",
+   "query": "\"child labour\" OR \"child labor\" OR \"domestic servitude\" OR \"recruitment fees\""
+  },
+  {
+   "label": "English (NZ) 1",
+   "lang": "en",
+   "standing": "press",
+   "hl": "en-NZ",
+   "gl": "NZ",
+   "ceid": "NZ:en",
+   "query": "\"forced labour\" OR \"forced labor\" OR \"modern slavery\" OR \"slave labour\""
+  },
+  {
+   "label": "English (NZ) 2",
+   "lang": "en",
+   "standing": "press",
+   "hl": "en-NZ",
+   "gl": "NZ",
+   "ceid": "NZ:en",
+   "query": "\"human trafficking\" OR \"labour trafficking\" OR \"labor trafficking\" OR \"debt bondage\" OR \"bonded labour\""
+  },
+  {
+   "label": "English (NZ) 3",
+   "lang": "en",
+   "standing": "press",
+   "hl": "en-NZ",
+   "gl": "NZ",
+   "ceid": "NZ:en",
+   "query": "\"child labour\" OR \"child labor\" OR \"domestic servitude\" OR \"recruitment fees\""
+  },
+  {
+   "label": "English (PH) 1",
+   "lang": "en",
+   "standing": "press",
+   "hl": "en-PH",
+   "gl": "PH",
+   "ceid": "PH:en",
+   "query": "\"forced labour\" OR \"forced labor\" OR \"modern slavery\" OR \"slave labour\""
+  },
+  {
+   "label": "English (PH) 2",
+   "lang": "en",
+   "standing": "press",
+   "hl": "en-PH",
+   "gl": "PH",
+   "ceid": "PH:en",
+   "query": "\"human trafficking\" OR \"labour trafficking\" OR \"labor trafficking\" OR \"debt bondage\" OR \"bonded labour\""
+  },
+  {
+   "label": "English (PH) 3",
+   "lang": "en",
+   "standing": "press",
+   "hl": "en-PH",
+   "gl": "PH",
+   "ceid": "PH:en",
+   "query": "\"child labour\" OR \"child labor\" OR \"domestic servitude\" OR \"recruitment fees\""
+  },
+  {
+   "label": "English (KE) 1",
+   "lang": "en",
+   "standing": "press",
+   "hl": "en-KE",
+   "gl": "KE",
+   "ceid": "KE:en",
+   "query": "\"forced labour\" OR \"forced labor\" OR \"modern slavery\" OR \"slave labour\""
+  },
+  {
+   "label": "English (KE) 2",
+   "lang": "en",
+   "standing": "press",
+   "hl": "en-KE",
+   "gl": "KE",
+   "ceid": "KE:en",
+   "query": "\"human trafficking\" OR \"labour trafficking\" OR \"labor trafficking\" OR \"debt bondage\" OR \"bonded labour\""
+  },
+  {
+   "label": "English (KE) 3",
+   "lang": "en",
+   "standing": "press",
+   "hl": "en-KE",
+   "gl": "KE",
+   "ceid": "KE:en",
+   "query": "\"child labour\" OR \"child labor\" OR \"domestic servitude\" OR \"recruitment fees\""
+  },
+  {
+   "label": "English (NG) 1",
+   "lang": "en",
+   "standing": "press",
+   "hl": "en-NG",
+   "gl": "NG",
+   "ceid": "NG:en",
+   "query": "\"forced labour\" OR \"forced labor\" OR \"modern slavery\" OR \"slave labour\""
+  },
+  {
+   "label": "English (NG) 2",
+   "lang": "en",
+   "standing": "press",
+   "hl": "en-NG",
+   "gl": "NG",
+   "ceid": "NG:en",
+   "query": "\"human trafficking\" OR \"labour trafficking\" OR \"labor trafficking\" OR \"debt bondage\" OR \"bonded labour\""
+  },
+  {
+   "label": "English (NG) 3",
+   "lang": "en",
+   "standing": "press",
+   "hl": "en-NG",
+   "gl": "NG",
+   "ceid": "NG:en",
+   "query": "\"child labour\" OR \"child labor\" OR \"domestic servitude\" OR \"recruitment fees\""
+  },
+  {
+   "label": "Español (ES) 1",
+   "lang": "es",
+   "standing": "press",
+   "hl": "es",
+   "gl": "ES",
+   "ceid": "ES:es",
+   "query": "\"trabajo forzoso\" OR \"trabajo esclavo\" OR \"esclavitud moderna\" OR \"explotación laboral\""
+  },
+  {
+   "label": "Español (ES) 2",
+   "lang": "es",
+   "standing": "press",
+   "hl": "es",
+   "gl": "ES",
+   "ceid": "ES:es",
+   "query": "\"trata de personas\" OR \"trata de seres humanos\" OR \"servidumbre\""
+  },
+  {
+   "label": "Español (ES) 3",
+   "lang": "es",
+   "standing": "press",
+   "hl": "es",
+   "gl": "ES",
+   "ceid": "ES:es",
+   "query": "\"trabajo infantil\""
+  },
+  {
+   "label": "Español (MX) 1",
+   "lang": "es",
+   "standing": "press",
+   "hl": "es-419",
+   "gl": "MX",
+   "ceid": "MX:es-419",
+   "query": "\"trabajo forzoso\" OR \"trabajo esclavo\" OR \"esclavitud moderna\" OR \"explotación laboral\""
+  },
+  {
+   "label": "Español (MX) 2",
+   "lang": "es",
+   "standing": "press",
+   "hl": "es-419",
+   "gl": "MX",
+   "ceid": "MX:es-419",
+   "query": "\"trata de personas\" OR \"trata de seres humanos\" OR \"servidumbre\""
+  },
+  {
+   "label": "Español (MX) 3",
+   "lang": "es",
+   "standing": "press",
+   "hl": "es-419",
+   "gl": "MX",
+   "ceid": "MX:es-419",
+   "query": "\"trabajo infantil\""
+  },
+  {
+   "label": "Español (AR) 1",
+   "lang": "es",
+   "standing": "press",
+   "hl": "es-419",
+   "gl": "AR",
+   "ceid": "AR:es-419",
+   "query": "\"trabajo forzoso\" OR \"trabajo esclavo\" OR \"esclavitud moderna\" OR \"explotación laboral\""
+  },
+  {
+   "label": "Español (AR) 2",
+   "lang": "es",
+   "standing": "press",
+   "hl": "es-419",
+   "gl": "AR",
+   "ceid": "AR:es-419",
+   "query": "\"trata de personas\" OR \"trata de seres humanos\" OR \"servidumbre\""
+  },
+  {
+   "label": "Español (AR) 3",
+   "lang": "es",
+   "standing": "press",
+   "hl": "es-419",
+   "gl": "AR",
+   "ceid": "AR:es-419",
+   "query": "\"trabajo infantil\""
+  },
+  {
+   "label": "Español (CO) 1",
+   "lang": "es",
+   "standing": "press",
+   "hl": "es-419",
+   "gl": "CO",
+   "ceid": "CO:es-419",
+   "query": "\"trabajo forzoso\" OR \"trabajo esclavo\" OR \"esclavitud moderna\" OR \"explotación laboral\""
+  },
+  {
+   "label": "Español (CO) 2",
+   "lang": "es",
+   "standing": "press",
+   "hl": "es-419",
+   "gl": "CO",
+   "ceid": "CO:es-419",
+   "query": "\"trata de personas\" OR \"trata de seres humanos\" OR \"servidumbre\""
+  },
+  {
+   "label": "Español (CO) 3",
+   "lang": "es",
+   "standing": "press",
+   "hl": "es-419",
+   "gl": "CO",
+   "ceid": "CO:es-419",
+   "query": "\"trabajo infantil\""
+  },
+  {
+   "label": "Español (PE) 1",
+   "lang": "es",
+   "standing": "press",
+   "hl": "es-419",
+   "gl": "PE",
+   "ceid": "PE:es-419",
+   "query": "\"trabajo forzoso\" OR \"trabajo esclavo\" OR \"esclavitud moderna\" OR \"explotación laboral\""
+  },
+  {
+   "label": "Español (PE) 2",
+   "lang": "es",
+   "standing": "press",
+   "hl": "es-419",
+   "gl": "PE",
+   "ceid": "PE:es-419",
+   "query": "\"trata de personas\" OR \"trata de seres humanos\" OR \"servidumbre\""
+  },
+  {
+   "label": "Español (PE) 3",
+   "lang": "es",
+   "standing": "press",
+   "hl": "es-419",
+   "gl": "PE",
+   "ceid": "PE:es-419",
+   "query": "\"trabajo infantil\""
+  },
+  {
+   "label": "Español (CL) 1",
+   "lang": "es",
+   "standing": "press",
+   "hl": "es-419",
+   "gl": "CL",
+   "ceid": "CL:es-419",
+   "query": "\"trabajo forzoso\" OR \"trabajo esclavo\" OR \"esclavitud moderna\" OR \"explotación laboral\""
+  },
+  {
+   "label": "Español (CL) 2",
+   "lang": "es",
+   "standing": "press",
+   "hl": "es-419",
+   "gl": "CL",
+   "ceid": "CL:es-419",
+   "query": "\"trata de personas\" OR \"trata de seres humanos\" OR \"servidumbre\""
+  },
+  {
+   "label": "Español (CL) 3",
+   "lang": "es",
+   "standing": "press",
+   "hl": "es-419",
+   "gl": "CL",
+   "ceid": "CL:es-419",
+   "query": "\"trabajo infantil\""
+  },
+  {
+   "label": "Português (BR) 1",
+   "lang": "pt",
+   "standing": "press",
+   "hl": "pt-BR",
+   "gl": "BR",
+   "ceid": "BR:pt-419",
+   "query": "\"trabalho escravo\" OR \"análoga à escravidão\" OR \"trabalho forçado\""
+  },
+  {
+   "label": "Português (BR) 2",
+   "lang": "pt",
+   "standing": "press",
+   "hl": "pt-BR",
+   "gl": "BR",
+   "ceid": "BR:pt-419",
+   "query": "\"tráfico de pessoas\" OR \"tráfico humano\""
+  },
+  {
+   "label": "Português (BR) 3",
+   "lang": "pt",
+   "standing": "press",
+   "hl": "pt-BR",
+   "gl": "BR",
+   "ceid": "BR:pt-419",
+   "query": "\"trabalho infantil\""
+  },
+  {
+   "label": "Português (PT) 1",
+   "lang": "pt",
+   "standing": "press",
+   "hl": "pt-BR",
+   "gl": "PT",
+   "ceid": "PT:pt-150",
+   "query": "\"trabalho escravo\" OR \"análoga à escravidão\" OR \"trabalho forçado\""
+  },
+  {
+   "label": "Português (PT) 2",
+   "lang": "pt",
+   "standing": "press",
+   "hl": "pt-BR",
+   "gl": "PT",
+   "ceid": "PT:pt-150",
+   "query": "\"tráfico de pessoas\" OR \"tráfico humano\""
+  },
+  {
+   "label": "Português (PT) 3",
+   "lang": "pt",
+   "standing": "press",
+   "hl": "pt-BR",
+   "gl": "PT",
+   "ceid": "PT:pt-150",
+   "query": "\"trabalho infantil\""
+  },
+  {
+   "label": "Português (AO) 1",
+   "lang": "pt",
+   "standing": "press",
+   "hl": "pt-BR",
+   "gl": "AO",
+   "ceid": "AO:pt-150",
+   "query": "\"trabalho escravo\" OR \"análoga à escravidão\" OR \"trabalho forçado\""
+  },
+  {
+   "label": "Português (AO) 2",
+   "lang": "pt",
+   "standing": "press",
+   "hl": "pt-BR",
+   "gl": "AO",
+   "ceid": "AO:pt-150",
+   "query": "\"tráfico de pessoas\" OR \"tráfico humano\""
+  },
+  {
+   "label": "Português (AO) 3",
+   "lang": "pt",
+   "standing": "press",
+   "hl": "pt-BR",
+   "gl": "AO",
+   "ceid": "AO:pt-150",
+   "query": "\"trabalho infantil\""
+  },
+  {
+   "label": "Français (FR) 1",
+   "lang": "fr",
+   "standing": "press",
+   "hl": "fr",
+   "gl": "FR",
+   "ceid": "FR:fr",
+   "query": "\"travail forcé\" OR \"esclavage moderne\" OR \"exploitation par le travail\""
+  },
+  {
+   "label": "Français (FR) 2",
+   "lang": "fr",
+   "standing": "press",
+   "hl": "fr",
+   "gl": "FR",
+   "ceid": "FR:fr",
+   "query": "\"traite des êtres humains\" OR \"traite d'êtres humains\""
+  },
+  {
+   "label": "Français (FR) 3",
+   "lang": "fr",
+   "standing": "press",
+   "hl": "fr",
+   "gl": "FR",
+   "ceid": "FR:fr",
+   "query": "\"travail des enfants\""
+  },
+  {
+   "label": "Français (BE) 1",
+   "lang": "fr",
+   "standing": "press",
+   "hl": "fr",
+   "gl": "BE",
+   "ceid": "BE:fr",
+   "query": "\"travail forcé\" OR \"esclavage moderne\" OR \"exploitation par le travail\""
+  },
+  {
+   "label": "Français (BE) 2",
+   "lang": "fr",
+   "standing": "press",
+   "hl": "fr",
+   "gl": "BE",
+   "ceid": "BE:fr",
+   "query": "\"traite des êtres humains\" OR \"traite d'êtres humains\""
+  },
+  {
+   "label": "Français (BE) 3",
+   "lang": "fr",
+   "standing": "press",
+   "hl": "fr",
+   "gl": "BE",
+   "ceid": "BE:fr",
+   "query": "\"travail des enfants\""
+  },
+  {
+   "label": "Français (CA) 1",
+   "lang": "fr",
+   "standing": "press",
+   "hl": "fr",
+   "gl": "CA",
+   "ceid": "CA:fr",
+   "query": "\"travail forcé\" OR \"esclavage moderne\" OR \"exploitation par le travail\""
+  },
+  {
+   "label": "Français (CA) 2",
+   "lang": "fr",
+   "standing": "press",
+   "hl": "fr",
+   "gl": "CA",
+   "ceid": "CA:fr",
+   "query": "\"traite des êtres humains\" OR \"traite d'êtres humains\""
+  },
+  {
+   "label": "Français (CA) 3",
+   "lang": "fr",
+   "standing": "press",
+   "hl": "fr",
+   "gl": "CA",
+   "ceid": "CA:fr",
+   "query": "\"travail des enfants\""
+  },
+  {
+   "label": "Français (SN) 1",
+   "lang": "fr",
+   "standing": "press",
+   "hl": "fr",
+   "gl": "SN",
+   "ceid": "SN:fr",
+   "query": "\"travail forcé\" OR \"esclavage moderne\" OR \"exploitation par le travail\""
+  },
+  {
+   "label": "Français (SN) 2",
+   "lang": "fr",
+   "standing": "press",
+   "hl": "fr",
+   "gl": "SN",
+   "ceid": "SN:fr",
+   "query": "\"traite des êtres humains\" OR \"traite d'êtres humains\""
+  },
+  {
+   "label": "Français (SN) 3",
+   "lang": "fr",
+   "standing": "press",
+   "hl": "fr",
+   "gl": "SN",
+   "ceid": "SN:fr",
+   "query": "\"travail des enfants\""
+  },
+  {
+   "label": "Deutsch (DE) 1",
+   "lang": "de",
+   "standing": "press",
+   "hl": "de",
+   "gl": "DE",
+   "ceid": "DE:de",
+   "query": "Zwangsarbeit OR \"moderne Sklaverei\" OR Arbeitsausbeutung"
+  },
+  {
+   "label": "Deutsch (DE) 2",
+   "lang": "de",
+   "standing": "press",
+   "hl": "de",
+   "gl": "DE",
+   "ceid": "DE:de",
+   "query": "Menschenhandel OR Kinderarbeit"
+  },
+  {
+   "label": "Deutsch (AT) 1",
+   "lang": "de",
+   "standing": "press",
+   "hl": "de",
+   "gl": "AT",
+   "ceid": "AT:de",
+   "query": "Zwangsarbeit OR \"moderne Sklaverei\" OR Arbeitsausbeutung"
+  },
+  {
+   "label": "Deutsch (AT) 2",
+   "lang": "de",
+   "standing": "press",
+   "hl": "de",
+   "gl": "AT",
+   "ceid": "AT:de",
+   "query": "Menschenhandel OR Kinderarbeit"
+  },
+  {
+   "label": "Deutsch (CH) 1",
+   "lang": "de",
+   "standing": "press",
+   "hl": "de",
+   "gl": "CH",
+   "ceid": "CH:de",
+   "query": "Zwangsarbeit OR \"moderne Sklaverei\" OR Arbeitsausbeutung"
+  },
+  {
+   "label": "Deutsch (CH) 2",
+   "lang": "de",
+   "standing": "press",
+   "hl": "de",
+   "gl": "CH",
+   "ceid": "CH:de",
+   "query": "Menschenhandel OR Kinderarbeit"
+  },
+  {
+   "label": "Italiano (IT) 1",
+   "lang": "it",
+   "standing": "press",
+   "hl": "it",
+   "gl": "IT",
+   "ceid": "IT:it",
+   "query": "caporalato OR \"sfruttamento lavorativo\" OR \"lavoro forzato\""
+  },
+  {
+   "label": "Italiano (IT) 2",
+   "lang": "it",
+   "standing": "press",
+   "hl": "it",
+   "gl": "IT",
+   "ceid": "IT:it",
+   "query": "\"tratta di esseri umani\" OR \"lavoro minorile\""
+  },
+  {
+   "label": "Italiano (CH) 1",
+   "lang": "it",
+   "standing": "press",
+   "hl": "it",
+   "gl": "CH",
+   "ceid": "CH:it",
+   "query": "caporalato OR \"sfruttamento lavorativo\" OR \"lavoro forzato\""
+  },
+  {
+   "label": "Italiano (CH) 2",
+   "lang": "it",
+   "standing": "press",
+   "hl": "it",
+   "gl": "CH",
+   "ceid": "CH:it",
+   "query": "\"tratta di esseri umani\" OR \"lavoro minorile\""
+  },
+  {
+   "label": "Nederlands (NL)",
+   "lang": "nl",
+   "standing": "press",
+   "hl": "nl",
+   "gl": "NL",
+   "ceid": "NL:nl",
+   "query": "dwangarbeid OR mensenhandel OR arbeidsuitbuiting OR kinderarbeid"
+  },
+  {
+   "label": "Nederlands (BE)",
+   "lang": "nl",
+   "standing": "press",
+   "hl": "nl",
+   "gl": "BE",
+   "ceid": "BE:nl",
+   "query": "dwangarbeid OR mensenhandel OR arbeidsuitbuiting OR kinderarbeid"
+  },
+  {
+   "label": "Svenska (SE)",
+   "lang": "sv",
+   "standing": "press",
+   "hl": "sv",
+   "gl": "SE",
+   "ceid": "SE:sv",
+   "query": "tvångsarbete OR människohandel OR barnarbete"
+  },
+  {
+   "label": "Polski (PL)",
+   "lang": "pl",
+   "standing": "press",
+   "hl": "pl",
+   "gl": "PL",
+   "ceid": "PL:pl",
+   "query": "\"praca przymusowa\" OR \"handel ludźmi\" OR \"praca dzieci\""
+  },
+  {
+   "label": "Ελληνικά (GR)",
+   "lang": "el",
+   "standing": "press",
+   "hl": "el",
+   "gl": "GR",
+   "ceid": "GR:el",
+   "query": "\"καταναγκαστική εργασία\" OR \"εμπορία ανθρώπων\" OR \"παιδική εργασία\""
+  },
+  {
+   "label": "Русский (RU)",
+   "lang": "ru",
+   "standing": "press",
+   "hl": "ru",
+   "gl": "RU",
+   "ceid": "RU:ru",
+   "query": "\"принудительный труд\" OR \"торговля людьми\" OR \"трудовое рабство\" OR \"детский труд\""
+  },
+  {
+   "label": "Русский (KZ)",
+   "lang": "ru",
+   "standing": "press",
+   "hl": "ru",
+   "gl": "KZ",
+   "ceid": "KZ:ru",
+   "query": "\"принудительный труд\" OR \"торговля людьми\" OR \"трудовое рабство\" OR \"детский труд\""
+  },
+  {
+   "label": "Українська (UA)",
+   "lang": "uk",
+   "standing": "press",
+   "hl": "uk",
+   "gl": "UA",
+   "ceid": "UA:uk",
+   "query": "\"примусова праця\" OR \"торгівля людьми\" OR \"дитяча праця\""
+  },
+  {
+   "label": "Türkçe (TR)",
+   "lang": "tr",
+   "standing": "press",
+   "hl": "tr",
+   "gl": "TR",
+   "ceid": "TR:tr",
+   "query": "\"insan ticareti\" OR \"zorla çalıştırma\" OR \"çocuk işçi\""
+  },
+  {
+   "label": "العربية (EG)",
+   "lang": "ar",
+   "standing": "press",
+   "hl": "ar",
+   "gl": "EG",
+   "ceid": "EG:ar",
+   "query": "\"العمل القسري\" OR \"الاتجار بالبشر\" OR \"عمالة الأطفال\" OR \"نظام الكفالة\""
+  },
+  {
+   "label": "العربية (SA)",
+   "lang": "ar",
+   "standing": "press",
+   "hl": "ar",
+   "gl": "SA",
+   "ceid": "SA:ar",
+   "query": "\"العمل القسري\" OR \"الاتجار بالبشر\" OR \"عمالة الأطفال\" OR \"نظام الكفالة\""
+  },
+  {
+   "label": "العربية (AE)",
+   "lang": "ar",
+   "standing": "press",
+   "hl": "ar",
+   "gl": "AE",
+   "ceid": "AE:ar",
+   "query": "\"العمل القسري\" OR \"الاتجار بالبشر\" OR \"عمالة الأطفال\" OR \"نظام الكفالة\""
+  },
+  {
+   "label": "فارسی (IR)",
+   "lang": "fa",
+   "standing": "press",
+   "hl": "fa",
+   "gl": "IR",
+   "ceid": "IR:fa",
+   "query": "\"کار اجباری\" OR \"قاچاق انسان\" OR \"کار کودکان\""
+  },
+  {
+   "label": "हिन्दी (IN)",
+   "lang": "hi",
+   "standing": "press",
+   "hl": "hi",
+   "gl": "IN",
+   "ceid": "IN:hi",
+   "query": "\"बंधुआ मजदूर\" OR \"मानव तस्करी\" OR \"बाल श्रम\""
+  },
+  {
+   "label": "বাংলা (BD)",
+   "lang": "bn",
+   "standing": "press",
+   "hl": "bn",
+   "gl": "BD",
+   "ceid": "BD:bn",
+   "query": "\"মানব পাচার\" OR \"শিশুশ্রম\" OR \"জোরপূর্বক শ্রম\""
+  },
+  {
+   "label": "বাংলা (IN)",
+   "lang": "bn",
+   "standing": "press",
+   "hl": "bn",
+   "gl": "IN",
+   "ceid": "IN:bn",
+   "query": "\"মানব পাচার\" OR \"শিশুশ্রম\" OR \"জোরপূর্বক শ্রম\""
+  },
+  {
+   "label": "Bahasa Indonesia (ID)",
+   "lang": "id",
+   "standing": "press",
+   "hl": "id",
+   "gl": "ID",
+   "ceid": "ID:id",
+   "query": "\"kerja paksa\" OR \"perdagangan orang\" OR TPPO OR \"pekerja anak\""
+  },
+  {
+   "label": "Tiếng Việt (VN)",
+   "lang": "vi",
+   "standing": "press",
+   "hl": "vi",
+   "gl": "VN",
+   "ceid": "VN:vi",
+   "query": "\"lao động cưỡng bức\" OR \"mua bán người\" OR \"lao động trẻ em\""
+  },
+  {
+   "label": "ไทย (TH)",
+   "lang": "th",
+   "standing": "press",
+   "hl": "th",
+   "gl": "TH",
+   "ceid": "TH:th",
+   "query": "\"แรงงานบังคับ\" OR \"การค้ามนุษย์\" OR \"แรงงานเด็ก\""
+  },
+  {
+   "label": "日本語 (JP)",
+   "lang": "ja",
+   "standing": "press",
+   "hl": "ja",
+   "gl": "JP",
+   "ceid": "JP:ja",
+   "query": "強制労働 OR 人身売買 OR 人身取引 OR 児童労働"
+  },
+  {
+   "label": "中文 (CN)",
+   "lang": "zh",
+   "standing": "press",
+   "hl": "zh-CN",
+   "gl": "CN",
+   "ceid": "CN:zh-Hans",
+   "query": "强迫劳动 OR 強迫勞動 OR 人口贩卖 OR 人口販運 OR 童工"
+  },
+  {
+   "label": "中文 (TW)",
+   "lang": "zh",
+   "standing": "press",
+   "hl": "zh-TW",
+   "gl": "TW",
+   "ceid": "TW:zh-Hant",
+   "query": "强迫劳动 OR 強迫勞動 OR 人口贩卖 OR 人口販運 OR 童工"
+  },
+  {
+   "label": "中文 (HK)",
+   "lang": "zh",
+   "standing": "press",
+   "hl": "zh-HK",
+   "gl": "HK",
+   "ceid": "HK:zh-Hant",
+   "query": "强迫劳动 OR 強迫勞動 OR 人口贩卖 OR 人口販運 OR 童工"
+  },
+  {
+   "label": "한국어 (KR)",
+   "lang": "ko",
+   "standing": "press",
+   "hl": "ko",
+   "gl": "KR",
+   "ceid": "KR:ko",
+   "query": "강제노동 OR 인신매매 OR 아동노동"
+  },
+  {
+   "label": "Kiswahili (KE)",
+   "lang": "sw",
+   "standing": "press",
+   "hl": "sw",
+   "gl": "KE",
+   "ceid": "KE:sw",
+   "query": "\"biashara ya binadamu\" OR \"ajira kwa watoto\" OR \"kazi ya kulazimishwa\""
+  },
+  {
+   "label": "Kiswahili (TZ)",
+   "lang": "sw",
+   "standing": "press",
+   "hl": "sw",
+   "gl": "TZ",
+   "ceid": "TZ:sw",
+   "query": "\"biashara ya binadamu\" OR \"ajira kwa watoto\" OR \"kazi ya kulazimishwa\""
+  }
+ ],
+ "events": [
+  {
+   "label": "forced labour",
+   "lang": "en",
+   "standing": "press",
+   "hl": "en-US",
+   "gl": "US",
+   "ceid": "US:en",
+   "query": "\"forced labour\" OR \"forced labor\"",
+   "was": "Feed: forced labour"
+  },
+  {
+   "label": "child labour",
+   "lang": "en",
+   "standing": "press",
+   "hl": "en-US",
+   "gl": "US",
+   "ceid": "US:en",
+   "query": "\"child labour\" OR \"child labor\"",
+   "was": "Feed: child labour"
+  },
+  {
+   "label": "modern slavery",
+   "lang": "en",
+   "standing": "press",
+   "hl": "en-US",
+   "gl": "US",
+   "ceid": "US:en",
+   "query": "\"modern slavery\"",
+   "was": "Feed: modern slavery"
+  },
+  {
+   "label": "labour trafficking",
+   "lang": "en",
+   "standing": "press",
+   "hl": "en-US",
+   "gl": "US",
+   "ceid": "US:en",
+   "query": "\"labour trafficking\" OR \"labor trafficking\"",
+   "was": "Feed: labour trafficking"
+  },
+  {
+   "label": "debt bondage",
+   "lang": "en",
+   "standing": "press",
+   "hl": "en-US",
+   "gl": "US",
+   "ceid": "US:en",
+   "query": "\"debt bondage\" OR \"bonded labour\"",
+   "was": "Feed: debt bondage"
+  },
+  {
+   "label": "recruitment fees",
+   "lang": "en",
+   "standing": "press",
+   "hl": "en-US",
+   "gl": "US",
+   "ceid": "US:en",
+   "query": "\"recruitment fees\" migrant workers",
+   "was": "Feed: recruitment fees"
+  },
+  {
+   "label": "withhold release order",
+   "lang": "en",
+   "standing": "press",
+   "hl": "en-US",
+   "gl": "US",
+   "ceid": "US:en",
+   "query": "\"withhold release order\" OR \"forced labor\" customs",
+   "was": "Feed: withhold release order"
+  },
+  {
+   "label": "UFLPA",
+   "lang": "en",
+   "standing": "press",
+   "hl": "en-US",
+   "gl": "US",
+   "ceid": "US:en",
+   "query": "UFLPA OR \"Uyghur Forced Labor Prevention Act\"",
+   "was": "Feed: UFLPA"
+  },
+  {
+   "label": "EU forced labour regulation",
+   "lang": "en",
+   "standing": "press",
+   "hl": "en-US",
+   "gl": "US",
+   "ceid": "US:en",
+   "query": "\"forced labour regulation\" EU",
+   "was": "Feed: EU forced labour regulation"
+  },
+  {
+   "label": "supply chain due diligence law",
+   "lang": "en",
+   "standing": "press",
+   "hl": "en-US",
+   "gl": "US",
+   "ceid": "US:en",
+   "query": "\"supply chain\" \"due diligence\" law forced labour",
+   "was": "Feed: supply chain due diligence law"
+  },
+  {
+   "label": "modern slavery statement",
+   "lang": "en",
+   "standing": "press",
+   "hl": "en-US",
+   "gl": "US",
+   "ceid": "US:en",
+   "query": "\"modern slavery statement\"",
+   "was": "Feed: modern slavery statement"
+  },
+  {
+   "label": "labour inspection raid",
+   "lang": "en",
+   "standing": "press",
+   "hl": "en-US",
+   "gl": "US",
+   "ceid": "US:en",
+   "query": "\"labour inspection\" OR \"labor inspectors\" rescued",
+   "was": "Feed: labour inspection raid"
+  },
+  {
+   "label": "wage theft migrant workers",
+   "lang": "en",
+   "standing": "press",
+   "hl": "en-US",
+   "gl": "US",
+   "ceid": "US:en",
+   "query": "\"wage theft\" migrant workers",
+   "was": "Feed: wage theft migrant workers"
+  },
+  {
+   "label": "cocoa child labour",
+   "lang": "en",
+   "standing": "press",
+   "hl": "en-US",
+   "gl": "US",
+   "ceid": "US:en",
+   "query": "cocoa \"child labour\" OR \"child labor\"",
+   "was": "Feed: cocoa child labour"
+  },
+  {
+   "label": "cotton forced labour",
+   "lang": "en",
+   "standing": "press",
+   "hl": "en-US",
+   "gl": "US",
+   "ceid": "US:en",
+   "query": "cotton \"forced labour\" OR \"forced labor\"",
+   "was": "Feed: cotton forced labour"
+  },
+  {
+   "label": "cobalt mining children",
+   "lang": "en",
+   "standing": "press",
+   "hl": "en-US",
+   "gl": "US",
+   "ceid": "US:en",
+   "query": "cobalt mining children Congo",
+   "was": "Feed: cobalt mining children"
+  },
+  {
+   "label": "brick kiln bonded labour",
+   "lang": "en",
+   "standing": "press",
+   "hl": "en-US",
+   "gl": "US",
+   "ceid": "US:en",
+   "query": "\"brick kiln\" bonded labour OR rescued",
+   "was": "Feed: brick kiln bonded labour"
+  },
+  {
+   "label": "mica mining child labour",
+   "lang": "en",
+   "standing": "press",
+   "hl": "en-US",
+   "gl": "US",
+   "ceid": "US:en",
+   "query": "mica mining child labour",
+   "was": "Feed: mica mining child labour"
+  },
+  {
+   "label": "garment workers forced labour",
+   "lang": "en",
+   "standing": "press",
+   "hl": "en-US",
+   "gl": "US",
+   "ceid": "US:en",
+   "query": "garment workers \"forced labour\" OR \"forced labor\"",
+   "was": "Feed: garment workers forced labour"
+  },
+  {
+   "label": "fishing crew forced labour",
+   "lang": "en",
+   "standing": "press",
+   "hl": "en-US",
+   "gl": "US",
+   "ceid": "US:en",
+   "query": "fishing crew \"forced labour\" OR abandoned seafarers",
+   "was": "Feed: fishing crew forced labour"
+  },
+  {
+   "label": "domestic workers abuse",
+   "lang": "en",
+   "standing": "press",
+   "hl": "en-US",
+   "gl": "US",
+   "ceid": "US:en",
+   "query": "\"domestic workers\" abuse OR trafficking kafala",
+   "was": "Feed: domestic workers abuse"
+  },
+  {
+   "label": "kafala reform Gulf",
+   "lang": "en",
+   "standing": "press",
+   "hl": "en-US",
+   "gl": "US",
+   "ceid": "US:en",
+   "query": "kafala reform migrant workers Gulf",
+   "was": "Feed: kafala reform Gulf"
+  },
+  {
+   "label": "Xinjiang forced labour",
+   "lang": "en",
+   "standing": "press",
+   "hl": "en-US",
+   "gl": "US",
+   "ceid": "US:en",
+   "query": "Xinjiang \"forced labour\" OR \"labour transfer\"",
+   "was": "Feed: Xinjiang forced labour"
+  },
+  {
+   "label": "scam compounds trafficking",
+   "lang": "en",
+   "standing": "press",
+   "hl": "en-US",
+   "gl": "US",
+   "ceid": "US:en",
+   "query": "\"scam centre\" OR \"scam compound\" trafficking",
+   "was": "Feed: scam compounds trafficking"
+  },
+  {
+   "label": "Brazil slave labour dirty list",
+   "lang": "en",
+   "standing": "press",
+   "hl": "en-US",
+   "gl": "US",
+   "ceid": "US:en",
+   "query": "Brazil \"slave labour\" OR \"trabalho escravo\"",
+   "was": "Feed: Brazil slave labour dirty list"
+  },
+  {
+   "label": "US child labor violations",
+   "lang": "en",
+   "standing": "press",
+   "hl": "en-US",
+   "gl": "US",
+   "ceid": "US:en",
+   "query": "\"child labor\" violations Department of Labor",
+   "was": "Feed: US child labor violations"
+  },
+  {
+   "label": "prison labour",
+   "lang": "en",
+   "standing": "press",
+   "hl": "en-US",
+   "gl": "US",
+   "ceid": "US:en",
+   "query": "\"prison labour\" OR \"prison labor\" exploitation",
+   "was": "Feed: prison labour"
+  },
+  {
+   "label": "survivor compensation trafficking",
+   "lang": "en",
+   "standing": "press",
+   "hl": "en-US",
+   "gl": "US",
+   "ceid": "US:en",
+   "query": "trafficking survivors compensation OR restitution",
+   "was": "Feed: survivor compensation trafficking"
+  },
+  {
+   "label": "ILO forced labour",
+   "lang": "en",
+   "standing": "press",
+   "hl": "en-US",
+   "gl": "US",
+   "ceid": "US:en",
+   "query": "ILO \"forced labour\" convention",
+   "was": "Feed: ILO forced labour"
+  },
+  {
+   "label": "trabalho escravo",
+   "lang": "pt",
+   "standing": "press",
+   "hl": "pt-BR",
+   "gl": "BR",
+   "ceid": "BR:pt-419",
+   "query": "\"trabalho escravo\"",
+   "was": "Front: trabalho escravo"
+  },
+  {
+   "label": "trabajo forzoso",
+   "lang": "es",
+   "standing": "press",
+   "hl": "es-419",
+   "gl": "MX",
+   "ceid": "MX:es-419",
+   "query": "\"trabajo forzoso\" OR \"trata de personas\"",
+   "was": "Front: trabajo forzoso"
+  },
+  {
+   "label": "travail forcé",
+   "lang": "fr",
+   "standing": "press",
+   "hl": "fr",
+   "gl": "FR",
+   "ceid": "FR:fr",
+   "query": "\"travail forcé\" OR \"traite des êtres humains\"",
+   "was": "Front: travail forcé"
+  },
+  {
+   "label": "caporalato",
+   "lang": "it",
+   "standing": "press",
+   "hl": "it",
+   "gl": "IT",
+   "ceid": "IT:it",
+   "query": "caporalato OR \"sfruttamento lavorativo\"",
+   "was": "Front: caporalato"
+  },
+  {
+   "label": "Zwangsarbeit",
+   "lang": "de",
+   "standing": "press",
+   "hl": "de",
+   "gl": "DE",
+   "ceid": "DE:de",
+   "query": "Zwangsarbeit OR Menschenhandel",
+   "was": "Front: Zwangsarbeit"
+  },
+  {
+   "label": "India bonded labour",
+   "lang": "en",
+   "standing": "press",
+   "hl": "en-IN",
+   "gl": "IN",
+   "ceid": "IN:en",
+   "query": "bonded labour India rescued",
+   "was": "Front: India bonded labour"
+  },
+  {
+   "label": "Gulf migrant workers",
+   "lang": "en",
+   "standing": "press",
+   "hl": "en",
+   "gl": "US",
+   "ceid": "US:en",
+   "query": "migrant workers wages Gulf OR Qatar OR Saudi",
+   "was": "Front: Gulf migrant workers"
+  },
+  {
+   "label": "Africa trafficking",
+   "lang": "en",
+   "standing": "press",
+   "hl": "en",
+   "gl": "US",
+   "ceid": "US:en",
+   "query": "trafficking arrested Nigeria OR Kenya OR Ghana OR Ethiopia",
+   "was": "Front: Africa trafficking"
+  },
+  {
+   "label": "Southeast Asia scam compounds",
+   "lang": "en",
+   "standing": "press",
+   "hl": "en",
+   "gl": "US",
+   "ceid": "US:en",
+   "query": "scam compound trafficking Myanmar OR Cambodia OR Laos",
+   "was": "Front: Southeast Asia scam compounds"
+  },
+  {
+   "label": "fishing crew rescued",
+   "lang": "en",
+   "standing": "press",
+   "hl": "en",
+   "gl": "US",
+   "ceid": "US:en",
+   "query": "fishing crew rescued OR abandoned forced labour",
+   "was": "Front: fishing crew rescued"
+  },
+  {
+   "label": "Guardian rights and freedom",
+   "lang": "en",
+   "standing": "press",
+   "hl": "en-GB",
+   "gl": "GB",
+   "ceid": "GB:en",
+   "query": "site:theguardian.com \"forced labour\" OR \"modern slavery\"",
+   "was": "Front: Guardian rights and freedom"
+  },
+  {
+   "label": "fishing fleet abuse",
+   "lang": "en",
+   "standing": "press",
+   "hl": "en",
+   "gl": "US",
+   "ceid": "US:en",
+   "query": "\"distant water\" fleet crew abuse OR \"forced labour\"",
+   "was": "Front: fishing fleet abuse"
+  },
+  {
+   "label": "union wins for migrant workers",
+   "lang": "en",
+   "standing": "press",
+   "hl": "en",
+   "gl": "US",
+   "ceid": "US:en",
+   "query": "union migrant workers unpaid wages won OR settlement",
+   "was": "Front: union wins for migrant workers"
+  },
+  {
+   "label": "garment supply chain enforcement",
+   "lang": "en",
+   "standing": "press",
+   "hl": "en",
+   "gl": "US",
+   "ceid": "US:en",
+   "query": "garment supplier \"forced labour\" brand OR audit",
+   "was": "Front: garment supply chain enforcement"
+  },
+  {
+   "label": "domestic worker rescued",
+   "lang": "en",
+   "standing": "press",
+   "hl": "en",
+   "gl": "US",
+   "ceid": "US:en",
+   "query": "\"domestic worker\" rescued OR charged OR convicted",
+   "was": "Front: domestic worker rescued"
+  },
+  {
+   "label": "ILO (site)",
+   "lang": "en",
+   "standing": "official",
+   "query": "site:ilo.org \"forced labour\" OR \"child labour\" OR trafficking",
+   "hl": "en-US",
+   "gl": "US",
+   "ceid": "US:en"
+  },
+  {
+   "label": "US Labor Department (site)",
+   "lang": "en",
+   "standing": "official",
+   "query": "site:dol.gov \"child labor\" OR \"forced labor\"",
+   "hl": "en-US",
+   "gl": "US",
+   "ceid": "US:en"
+  },
+  {
+   "label": "US Customs (site)",
+   "lang": "en",
+   "standing": "official",
+   "query": "site:cbp.gov \"forced labor\" OR \"withhold release order\"",
+   "hl": "en-US",
+   "gl": "US",
+   "ceid": "US:en"
+  },
+  {
+   "label": "UNODC (site)",
+   "lang": "en",
+   "standing": "official",
+   "query": "site:unodc.org trafficking OR \"forced labour\"",
+   "hl": "en-US",
+   "gl": "US",
+   "ceid": "US:en"
+  },
+  {
+   "label": "UN & rights bodies (site)",
+   "lang": "en",
+   "standing": "official",
+   "query": "site:ohchr.org OR site:un.org \"forced labour\" OR slavery OR trafficking",
+   "hl": "en-US",
+   "gl": "US",
+   "ceid": "US:en"
+  },
+  {
+   "label": "Walk Free (site)",
+   "lang": "en",
+   "standing": "research",
+   "query": "site:walkfree.org \"modern slavery\"",
+   "hl": "en-US",
+   "gl": "US",
+   "ceid": "US:en"
+  },
+  {
+   "label": "Courts & convictions",
+   "lang": "en",
+   "standing": "press",
+   "query": "\"forced labour\" OR \"human trafficking\" convicted OR sentenced OR jailed",
+   "hl": "en-US",
+   "gl": "US",
+   "ceid": "US:en"
+  },
+  {
+   "label": "Rescues & raids",
+   "lang": "en",
+   "standing": "press",
+   "query": "\"forced labour\" OR \"bonded labour\" OR \"child labour\" rescued OR raid",
+   "hl": "en-US",
+   "gl": "US",
+   "ceid": "US:en"
+  }
+ ]
+}
